@@ -1,5 +1,4 @@
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+package newbank.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,8 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class NewBankClientHandler extends Thread{
-
-	private static final Logger LOGGER = LogManager.getLogger(NewBankClientHandler.class);
+	
 	private NewBank bank;
 	private BufferedReader in;
 	private PrintWriter out;
@@ -39,8 +37,8 @@ public class NewBankClientHandler extends Thread{
 				while(true) {
 					String request = in.readLine();
 					System.out.println("Request from " + customer.getKey());
-					String responce = bank.processRequest(customer, request);
-					out.println(responce);
+					String response = bank.processRequest(customer, request);
+					out.println(response);
 				}
 			}
 			else {
