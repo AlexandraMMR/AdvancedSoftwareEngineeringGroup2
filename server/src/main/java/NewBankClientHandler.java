@@ -1,4 +1,5 @@
-package newbank.server;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +8,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class NewBankClientHandler extends Thread{
-	
+
+	private static final Logger LOGGER = LogManager.getLogger(NewBankClientHandler.class);
 	private NewBank bank;
 	private BufferedReader in;
 	private PrintWriter out;

@@ -1,11 +1,13 @@
-package newbank.server;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class NewBankServer extends Thread{
-	
+
+	private static final Logger LOGGER = LogManager.getLogger(NewBankServer.class);
 	private ServerSocket server;
 	
 	public NewBankServer(int port) throws IOException {

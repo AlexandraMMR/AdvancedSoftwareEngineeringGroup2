@@ -1,9 +1,11 @@
-package newbank.server;
-
 import java.util.HashMap;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 public class NewBank {
-	
+
+	private static final Logger LOGGER = LogManager.getLogger(NewBank.class);
 	private static final NewBank bank = new NewBank();
 	private HashMap<String,Customer> customers;
 	

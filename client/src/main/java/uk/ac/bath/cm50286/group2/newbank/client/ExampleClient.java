@@ -1,4 +1,4 @@
-package newbank.client;
+package uk.ac.bath.cm50286.group2.newbank.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,25 +7,29 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 public class ExampleClient extends Thread{
-	
+
+	private static final Logger LOGGER = LogManager.getLogger(ExampleClient.class);
 	private Socket server;
 	private PrintWriter bankServerOut;	
 	private BufferedReader userInput;
-	private Thread bankServerResponceThread;
+	private Thread bankServerResponseThread;
 	
 	public ExampleClient(String ip, int port) throws UnknownHostException, IOException {
 		server = new Socket(ip,port);
 		userInput = new BufferedReader(new InputStreamReader(System.in)); 
 		bankServerOut = new PrintWriter(server.getOutputStream(), true); 
 		
-		bankServerResponceThread = new Thread() {
+		bankServerResponseThread = new Thread() {
 			private BufferedReader bankServerIn = new BufferedReader(new InputStreamReader(server.getInputStream())); 
 			public void run() {
 				try {
 					while(true) {
-						String responce = bankServerIn.readLine();
-						System.out.println(responce);
+						String response = bankServerIn.readLine();
+						System.out.println(response);
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -33,7 +37,7 @@ public class ExampleClient extends Thread{
 				}
 			}
 		};
-		bankServerResponceThread.start();
+		bankServerResponseThread.start();
 	}
 	
 	

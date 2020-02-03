@@ -1,9 +1,11 @@
-package newbank.server;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
 public class Customer {
-	
+
+	private static final Logger LOGGER = LogManager.getLogger(Customer.class);
 	private ArrayList<Account> accounts;
 	
 	public Customer() {
