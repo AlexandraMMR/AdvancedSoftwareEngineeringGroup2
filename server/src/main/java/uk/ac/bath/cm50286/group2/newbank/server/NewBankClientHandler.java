@@ -1,4 +1,6 @@
-package newbank.server;
+package uk.ac.bath.cm50286.group2.newbank.server;
+
+import uk.ac.bath.cm50286.group2.newbank.server.model.Customer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,13 +32,13 @@ public class NewBankClientHandler extends Thread{
 			String password = in.readLine();
 			out.println("Checking Details...");
 			// authenticate user and get customer ID token from bank for use in subsequent requests
-			CustomerID customer = bank.checkLogInDetails(userName, password);
+			Customer customer = bank.checkLogInDetails(userName, password);
 			// if the user is authenticated then get requests from the user and process them 
 			if(customer != null) {
 				out.println("Log In Successful. What do you want to do?");
 				while(true) {
 					String request = in.readLine();
-					System.out.println("Request from " + customer.getKey());
+					System.out.println("Request from " + customer.getUsername());
 					String response = bank.processRequest(customer, request);
 					out.println(response);
 				}

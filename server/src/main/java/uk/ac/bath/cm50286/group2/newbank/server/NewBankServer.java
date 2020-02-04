@@ -1,9 +1,12 @@
+package uk.ac.bath.cm50286.group2.newbank.server;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 
 public class NewBankServer extends Thread{
 
@@ -36,8 +39,9 @@ public class NewBankServer extends Thread{
 		}
 	}
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, SQLException {
 		// starts a new NewBankServer thread on a specified port number
+		LOGGER.info("Starting NewBankServer on port 14002");
 		new NewBankServer(14002).start();
 	}
 }

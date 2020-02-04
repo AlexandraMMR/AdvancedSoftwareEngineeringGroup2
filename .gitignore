@@ -3,6 +3,7 @@
 
 # Log file
 *.log
+logs/
 
 # BlueJ files
 *.ctxt
@@ -29,3 +30,6 @@ hs_err_pid*
 # IntelliJ Files
 .idea
 *.iml
+
+# Maven target directory
+target/

@@ -10,14 +10,14 @@ import java.net.UnknownHostException;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
-public class ExampleClient extends Thread{
+public class ExampleClient extends Thread {
 
 	private static final Logger LOGGER = LogManager.getLogger(ExampleClient.class);
 	private Socket server;
 	private PrintWriter bankServerOut;	
 	private BufferedReader userInput;
 	private Thread bankServerResponseThread;
-	
+
 	public ExampleClient(String ip, int port) throws UnknownHostException, IOException {
 		server = new Socket(ip,port);
 		userInput = new BufferedReader(new InputStreamReader(System.in)); 
@@ -39,15 +39,14 @@ public class ExampleClient extends Thread{
 		};
 		bankServerResponseThread.start();
 	}
-	
-	
+
 	public void run() {
 		while(true) {
 			try {
 				while(true) {
 					String command = userInput.readLine();
 					bankServerOut.println(command);
-				}				
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
