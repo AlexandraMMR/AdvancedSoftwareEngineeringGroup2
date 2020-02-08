@@ -26,7 +26,7 @@ public class NewBank {
 	public static NewBank getBank() {
 		return bank;
 	}
-	
+
 	public synchronized Customer checkLogInDetails(String username, String password) {
 		Customer customer = customerDao.getCustomer(username);
 		if (customer.getPassword().equals(password)) {
@@ -42,11 +42,19 @@ public class NewBank {
 		for (int i=0; i<requestParams.length; i++) {
 			System.out.println(i+"="+requestParams[i]);
 		}
-		switch(requestParams[0]) {
-			case "SHOWMYACCOUNTS" : return accountController.getAccountsAsString(customer);
-			case "CREATECUSTOMER" : return customerController.createCustomer(customer,requestParams[1],requestParams[2],requestParams[3]);
-			default : return "FAIL";
+		if (requestParams[0].equals("SHOWMYACCOUNTS")){
+			return accountController.getAccountsAsString(customer);
 		}
+		else if (requestParams[0].equals("CREATECUSTOMER") && requestParams.length==9) {
+			return customerController.createCustomer(
+					customer, requestParams[1], requestParams[2], requestParams[3], requestParams[4], requestParams[5]
+					, requestParams[6], requestParams[7], requestParams[8]);
+		}
+		else if (requestParams[0].equals("CREATECUSTOMER")) {
+			return "Invalid use of command\n FORMAT: First Name,Last Name, Username, Password, Email, Address, Postcode, NI number";
+		}
+			else return "FAIL";
 	}
+
 
 }

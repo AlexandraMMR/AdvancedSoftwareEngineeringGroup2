@@ -14,23 +14,27 @@ public class ExampleClient extends Thread {
 
 	private static final Logger LOGGER = LogManager.getLogger(ExampleClient.class);
 	private Socket server;
-	private PrintWriter bankServerOut;	
+	private PrintWriter bankServerOut;
 	private BufferedReader userInput;
 	private Thread bankServerResponseThread;
 
 	public ExampleClient(String ip, int port) throws UnknownHostException, IOException {
 		server = new Socket(ip,port);
-		userInput = new BufferedReader(new InputStreamReader(System.in)); 
-		bankServerOut = new PrintWriter(server.getOutputStream(), true); 
-		
+		userInput = new BufferedReader(new InputStreamReader(System.in));
+		bankServerOut = new PrintWriter(server.getOutputStream(), true);
+
 		bankServerResponseThread = new Thread() {
-			private BufferedReader bankServerIn = new BufferedReader(new InputStreamReader(server.getInputStream())); 
+			private BufferedReader bankServerIn = new BufferedReader(new InputStreamReader(server.getInputStream()));
 			public void run() {
 				try {
-					while(true) {
-						String response = bankServerIn.readLine();
+					String response = bankServerIn.readLine();
+					System.out.println(response);
+					while(response!=null) {
+						response = bankServerIn.readLine();
 						System.out.println(response);
 					}
+					System.out.println("Connection Terminated - Please restart client");
+					server.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 					return;
@@ -53,7 +57,7 @@ public class ExampleClient extends Thread {
 			}
 		}
 	}
-	
+
 	public static void main(String[] args) throws UnknownHostException, IOException, InterruptedException {
 		new ExampleClient("localhost",14002).start();
 	}

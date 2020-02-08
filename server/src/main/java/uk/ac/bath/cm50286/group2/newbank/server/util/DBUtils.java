@@ -57,7 +57,8 @@ public class DBUtils {
         CustomerDAO customerDao = new CustomerDAO();
         customerDao.createTable();
         // create admin user
-        customerDao.insertCustomer("admin","admin","Administrator");
+        customerDao.insertCustomer("admin","admin","admin","admin",
+            "admin@admin.admin", "5 Admin Avenue", "AD5 M1N", "AD123456789");
         AccountDAO accountDao = new AccountDAO();
         accountDao.createTable();
 

@@ -33,8 +33,9 @@ public class CustomerController {
         return sb.toString();
     }
 
-    public String createCustomer(Customer customer,String username,String password,String name) {
-        LOGGER.info("Creating customer with username '"+username+"', name '"+name+"'.");
+    public String createCustomer(Customer customer,String firstname, String lastname, String username,String password,
+                                 String email, String address, String postcode, String ninumber ) {
+        LOGGER.info("Creating customer with username '"+username+"', name '"+firstname+" "+lastname+"'.");
         if (!customer.getUsername().equals("admin")) {
             return "ERROR: Only the admin can create new customers.";
         }
@@ -42,14 +43,14 @@ public class CustomerController {
         if (existing != null) {
             return "ERROR: Customer with username "+username+" already exists.";
         }
-        customerDAO.insertCustomer(username,password,name);
+        customerDAO.insertCustomer(firstname, lastname, username, password, email, address, postcode, ninumber);
         Customer newCustomer = customerDAO.getCustomer(username);
         accountDAO.insertAccount(newCustomer,"Main");
         return "Customer "+username+" and Main account created.";
     }
 
     public void updatePassword(Customer customer,String newPassword) {
-        customerDAO.updateCustomer(customer.getUsername(),newPassword,customer.getName());
+        customerDAO.updateCustomer(customer.getUsername(),newPassword,customer.getFirstName());
     }
 
     public void updateName(Customer customer,String newName) {

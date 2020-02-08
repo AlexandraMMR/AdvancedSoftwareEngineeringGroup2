@@ -1,5 +1,22 @@
 package uk.ac.bath.cm50286.group2.newbank.server.dao;
 
+/**
+ * Customer Database Objects
+ * Columns defined by database:
+ * CustID - Customer ID number
+ * FirstName
+ * LastName
+ * UserName
+ * Password
+ * Email
+ * Address
+ * PostCode
+ * NI_Number
+ *
+ */
+
+
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.bath.cm50286.group2.newbank.server.model.Customer;
@@ -14,19 +31,47 @@ public class CustomerDAO {
     private static final Logger LOGGER = LogManager.getLogger(CustomerDAO.class);
 
     private static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS customers" +
-            "(username VARCHAR(255) NOT NULL," +
-            " password VARCHAR(255) ," +
-            " name VARCHAR(255), " +
-            " PRIMARY KEY (username))";
+ /* custid
+  * firstname
+  * lastname
+  * username
+  * password
+  * email
+  * address
+  * postcode
+  * ninumber
+
+  * firstname, lastname, username, password, email, address, postcode, ninumber
+
+  */
+        "(custid INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
+        " firstname VARCHAR(255) NOT NULL," +
+        " lastname VARCHAR(255) NOT NULL," +
+        " username VARCHAR(255) NOT NULL," +
+        " password VARCHAR(255) NOT NULL," +
+        " email VARCHAR(255) NOT NULL, " +
+        " address VARCHAR(255) NOT NULL, " +
+        " postcode VARCHAR(255) NOT NULL, " +
+        " ninumber VARCHAR(255) NOT NULL)"
+//        +" PRIMARY KEY (custid))"
+        ;
+
+
+
+
+/*        "(username VARCHAR(255) NOT NULL," +
+        " password VARCHAR(255) ," +
+        " name VARCHAR(255), " +
+        " PRIMARY KEY (username))";
+        */
     private static final String SQL_SELECT_ALL = "SELECT * FROM customers";
     private static final String SQL_SELECT_BY_USERNAME = "SELECT * FROM customers " +
             " WHERE username = ?;";
     private static final String SQL_INSERT = "INSERT INTO customers" +
-            " (username, password, name) VALUES " +
-            " (?, ?, ?);";
+            " (firstname, lastname, userName, password, email, address, postcode, ninumber) VALUES " +
+            " (?, ?, ?, ?, ?, ?, ?, ?);";
     private static final String SQL_UPDATE = "UPDATE customers SET " +
             " password = ?, " +
-            " name = ? " +
             " WHERE username = ?;";
     private static final String SQL_DELETE = "DELETE FROM customers " +
             " WHERE username = ?;";
@@ -49,7 +94,18 @@ public class CustomerDAO {
             LOGGER.info("H2: "+ps.toString());
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                allCustomers.add(new Customer(rs.getString("username"),rs.getString("password"),rs.getString("name")));
+                allCustomers.add(new Customer(
+                    rs.getInt("custid"),
+                    rs.getString("firstname"),
+                    rs.getString("lastname"),
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    rs.getString("email"),
+                    rs.getString("address"),
+                    rs.getString("postcode"),
+                    rs.getString("ninumber")
+
+                ));
             }
             rs.close();
         }
@@ -66,7 +122,17 @@ public class CustomerDAO {
             LOGGER.info("H2: "+ps.toString());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new Customer(rs.getString("username"),rs.getString("password"),rs.getString("name"));
+                return new Customer(
+                    rs.getInt("custid"),
+                    rs.getString("firstname"),
+                    rs.getString("lastname"),
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    rs.getString("email"),
+                    rs.getString("address"),
+                    rs.getString("postcode"),
+                    rs.getString("ninumber")
+                );
             }
             rs.close();
         }
@@ -76,12 +142,19 @@ public class CustomerDAO {
         return null;
     }
 
-    public void insertCustomer(String username,String password,String name) {
+    public void insertCustomer(String firstname, String lastname, String username,String password,
+                               String email, String address, String postcode, String ninumber ) {
         try (Connection connection = DBUtils.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(SQL_INSERT);
-            ps.setString(1, username);
-            ps.setString(2, password);
-            ps.setString(3, name);
+            ps.setString(1, firstname);
+            ps.setString(2, lastname);
+            ps.setString(3, username);
+            ps.setString(4, password);
+            ps.setString(5, email);
+            ps.setString(6, address);
+            ps.setString(7, postcode);
+            ps.setString(8, ninumber);
+
             LOGGER.info("H2: "+ps.toString());
             ps.executeUpdate();
         }
@@ -94,8 +167,7 @@ public class CustomerDAO {
         try (Connection connection = DBUtils.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(SQL_UPDATE);
             ps.setString(1, password);
-            ps.setString(2, name);
-            ps.setString(3, username);
+            ps.setString(2, username);
             LOGGER.info("H2: "+ps.toString());
             ps.executeUpdate();
         }
