@@ -13,10 +13,18 @@ public class Account {
 	private String accountName;
 	private BigDecimal balance;
 
-	public Account(Customer customer,String accountName, BigDecimal balance) {
+	private Integer acctID;
+	private AccountType acctType;
+
+	public Account(int acctID, Customer customer, AccountType acctType, BigDecimal balance) {
+		this.acctID = acctID;
 		this.customer = customer;
-		this.accountName = accountName;
+		this.acctType = acctType;
 		this.balance = balance;
+	}
+
+	public Integer getAcctID() {
+		return acctID;
 	}
 
 	public Customer getCustomer() {
@@ -36,7 +44,13 @@ public class Account {
 	}
 
 	public String toString() {
-		return (accountName + ": " + balance);
+		return (acctID.toString() + " " + acctType.getAcctdesc() + ": " + balance);
 	}
+
+	public AccountType getAcctType(){
+		return acctType;
+	}
+
+
 
 }

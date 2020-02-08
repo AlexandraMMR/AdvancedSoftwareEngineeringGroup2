@@ -3,7 +3,9 @@ package uk.ac.bath.cm50286.group2.newbank.server.util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.bath.cm50286.group2.newbank.server.dao.AccountDAO;
+import uk.ac.bath.cm50286.group2.newbank.server.dao.AccountTypeDAO;
 import uk.ac.bath.cm50286.group2.newbank.server.dao.CustomerDAO;
+import uk.ac.bath.cm50286.group2.newbank.server.model.AccountType;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -61,6 +63,11 @@ public class DBUtils {
             "admin@admin.admin", "5 Admin Avenue", "AD5 M1N", "AD123456789");
         AccountDAO accountDao = new AccountDAO();
         accountDao.createTable();
+        AccountTypeDAO accountTypeDao = new AccountTypeDAO();
+        accountTypeDao.createTable();
+        accountTypeDao.insertAccountType("Main");
+        accountTypeDao.insertAccountType("Savings");
+        accountTypeDao.insertAccountType("ISA");
 
     }
 

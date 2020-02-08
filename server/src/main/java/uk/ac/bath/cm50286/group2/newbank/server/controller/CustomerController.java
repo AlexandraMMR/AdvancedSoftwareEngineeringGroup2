@@ -3,6 +3,7 @@ package uk.ac.bath.cm50286.group2.newbank.server.controller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.bath.cm50286.group2.newbank.server.dao.AccountDAO;
+import uk.ac.bath.cm50286.group2.newbank.server.dao.AccountTypeDAO;
 import uk.ac.bath.cm50286.group2.newbank.server.dao.CustomerDAO;
 import uk.ac.bath.cm50286.group2.newbank.server.model.Account;
 import uk.ac.bath.cm50286.group2.newbank.server.model.Customer;
@@ -15,6 +16,7 @@ public class CustomerController {
 
     private AccountDAO accountDAO;
     private CustomerDAO customerDAO;
+
 
     public CustomerController(CustomerDAO customerDAO,AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
@@ -45,7 +47,9 @@ public class CustomerController {
         }
         customerDAO.insertCustomer(firstname, lastname, username, password, email, address, postcode, ninumber);
         Customer newCustomer = customerDAO.getCustomer(username);
-        accountDAO.insertAccount(newCustomer,"Main");
+
+        AccountTypeDAO accountTypeDAO = new AccountTypeDAO();
+        accountDAO.insertAccount(newCustomer,accountTypeDAO.getAccountType(1));
         return "Customer "+username+" and Main account created.";
     }
 
