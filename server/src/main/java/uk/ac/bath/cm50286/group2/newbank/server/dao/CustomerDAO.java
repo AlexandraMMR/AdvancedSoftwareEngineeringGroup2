@@ -31,19 +31,6 @@ public class CustomerDAO {
     private static final Logger LOGGER = LogManager.getLogger(CustomerDAO.class);
 
     private static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS customers" +
- /* custid
-  * firstname
-  * lastname
-  * username
-  * password
-  * email
-  * address
-  * postcode
-  * ninumber
-
-  * firstname, lastname, username, password, email, address, postcode, ninumber
-
-  */
         "(custid INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
         " firstname VARCHAR(255) NOT NULL," +
         " lastname VARCHAR(255) NOT NULL," +
@@ -53,17 +40,7 @@ public class CustomerDAO {
         " address VARCHAR(255) NOT NULL, " +
         " postcode VARCHAR(255) NOT NULL, " +
         " ninumber VARCHAR(255) NOT NULL)"
-//        +" PRIMARY KEY (custid))"
         ;
-
-
-
-
-/*        "(username VARCHAR(255) NOT NULL," +
-        " password VARCHAR(255) ," +
-        " name VARCHAR(255), " +
-        " PRIMARY KEY (username))";
-        */
     private static final String SQL_SELECT_ALL = "SELECT * FROM customers";
     private static final String SQL_SELECT_BY_USERNAME = "SELECT * FROM customers " +
             " WHERE username = ?;";
