@@ -44,7 +44,13 @@ public class NewBank {
 		}
 		switch(requestParams[0]) {
 			case "SHOWMYACCOUNTS" : return accountController.getAccountsAsString(customer);
-			case "CREATECUSTOMER" : return customerController.createCustomer(customer,requestParams[1],requestParams[2],requestParams[3]);
+			case "CREATECUSTOMER" :
+				if(requestParams.length < 4){
+					return "FAIL: An insufficient number of arguments were supplied for the command";
+				}
+				else {
+					return customerController.createCustomer(customer, requestParams[1], requestParams[2], requestParams[3]);
+				}
 			default : return "FAIL";
 		}
 	}
