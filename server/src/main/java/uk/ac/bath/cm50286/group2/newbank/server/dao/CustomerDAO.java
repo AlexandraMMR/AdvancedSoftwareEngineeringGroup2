@@ -121,7 +121,7 @@ public class CustomerDAO {
 
     public void insertCustomer(String firstname, String lastname, String username,String password,
                                String email, String address, String postcode, String ninumber ) {
-        try (Connection connection = DBUtils.getConnection()) {
+        try (Connection connection = DBUtils.getConnection()) { 
             PreparedStatement ps = connection.prepareStatement(SQL_INSERT);
             ps.setString(1, firstname);
             ps.setString(2, lastname);
