@@ -59,6 +59,7 @@ public class Customer {
 
 	@Override
 	public String toString() {
-		return (username + ": " + username);
+		return (
+				custid + " | " + firstname + " | " + lastname + " | " + username +"\n");
 	}
 }

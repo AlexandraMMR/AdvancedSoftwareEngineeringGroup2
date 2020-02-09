@@ -49,9 +49,12 @@ public class NewBank {
 			return customerController.createCustomer(
 					customer, requestParams[1], requestParams[2], requestParams[3], requestParams[4], requestParams[5]
 					, requestParams[6], requestParams[7], requestParams[8]);
-		}
+			}
 		else if (requestParams[0].equals("CREATECUSTOMER")) {
 			return "Invalid use of command\n FORMAT: First Name,Last Name, Username, Password, Email, Address, Postcode, NI number";
+		}
+		else if (requestParams[0].equals("SHOWCUSTOMERS")) {
+			return customerController.getOtherCustomers(customer);
 		}
 			else return "FAIL";
 	}

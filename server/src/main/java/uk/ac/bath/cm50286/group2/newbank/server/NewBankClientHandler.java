@@ -39,6 +39,7 @@ public class NewBankClientHandler extends Thread{
 			if(customer != null) {
 				out.println("Log In Successful. What do you want to do?");
 				while(true) {
+					out.println("Command:");
 					String request = in.readLine();
 					if (request.equals("EXIT")){
 						s.close();

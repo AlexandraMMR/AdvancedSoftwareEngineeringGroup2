@@ -57,8 +57,10 @@ public class CustomerController {
         customerDAO.updateCustomer(customer.getUsername(),newPassword,customer.getFirstName());
     }
 
+/*
     public void updateName(Customer customer,String newName) {
         customerDAO.updateCustomer(customer.getUsername(),customer.getPassword(),newName);
     }
+*/
 
 }
