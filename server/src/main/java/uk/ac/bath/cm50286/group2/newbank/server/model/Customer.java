@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 public class Customer {
 
 	private static final Logger LOGGER = LogManager.getLogger(Customer.class);
-	private int custid;
+	private Integer custid;
 	private String firstname;
 	private String lastname;
 	private String username;
@@ -57,9 +57,19 @@ public class Customer {
 	}
 */
 
+public String appendSpace(String s) {
+	int spaces = 10 - s.length();
+	StringBuilder sb = new StringBuilder(s);
+	for (int i = 0; i < spaces; i++) {
+		sb.append(" ");
+	}
+	return sb.toString();
+}
+
 	@Override
 	public String toString() {
 		return (
-				custid + " | " + firstname + " | " + lastname + " | " + username +"\n");
+				appendSpace(custid.toString()) + " | " + appendSpace(firstname) + " | " +
+						appendSpace(lastname) + " | " + appendSpace(username)+"\n");
 	}
 }

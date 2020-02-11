@@ -54,7 +54,10 @@ public class NewBank {
 			return "Invalid use of command\n FORMAT: First Name,Last Name, Username, Password, Email, Address, Postcode, NI number";
 		}
 		else if (requestParams[0].equals("SHOWCUSTOMERS")) {
-			return customerController.getOtherCustomers(customer);
+			return
+					"CUSTID     | Firstname  | Lastname   | Username  \n"+
+					"-------------------------------------------------\n"+
+					customerController.getOtherCustomers(customer);
 		}
 			else return "FAIL";
 	}
