@@ -15,79 +15,116 @@ public class AccountTypeDAO {
     private static final Logger LOGGER = LogManager.getLogger(AccountDAO.class);
 
     private static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS accounttypes" +
-            "(accttypeid INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
-            "acctdesc VARCHAR(255) NOT NULL)";
+        "(accttypeid INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
+        "acctdesc VARCHAR(255) NOT NULL);";
 
     private static final String SQL_INSERT = "INSERT INTO accounttypes" +
-            " (acctdesc) VALUES " +
-            " (?);";
+        " (acctdesc) VALUES " +
+        " (?);";
 
     private static final String SQL_SELECT_ALL = "SELECT * FROM accounttypes";
 
-    private static final String SQL_SELECT_BY_ACCTYPEID = "SELECT * FROM accounttypes " +
-            " WHERE accttypeid = ?;";
+    private static final String SQL_SELECT_BY_ACCTTYPEID = "SELECT * FROM ACCOUNTTYPES " +
+        "WHERE ACCTTYPEID = ?;";
+/*
+    private static final String SQL_SELECT_BY_ACCTTYPEID = "SELECT ACCTDESC FROM ACCOUNTTYPES" +
+        " WHERE ACCTTYPEID = ? ;";
+*/
+
+    private static final String SQL_SELECT_BY_ACCTDESC = "SELECT accttypeid from accounttypes" +
+        " WHERE acctdesc = ?;";
 
     public void createTable() {
         try (Connection connection = DBUtils.getConnection()) {
             Statement statement = connection.createStatement();
-            LOGGER.info("H2: "+SQL_CREATE);
+            LOGGER.info("H2: " + SQL_CREATE);
             statement.execute(SQL_CREATE);
-        }
-        catch (SQLException e) {
-            DBUtils.printSQLException(e);
-        }
-    }
-    public void insertAccountType(String acctdesc) {
-        try (Connection connection = DBUtils.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement(SQL_INSERT);
-            ps.setString(1, acctdesc);
-            LOGGER.info("H2: "+ps.toString());
-            ps.executeUpdate();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             DBUtils.printSQLException(e);
         }
     }
 
+    public void insertAccountType(String acctdesc) {
+        try (Connection connection = DBUtils.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(SQL_INSERT);
+            ps.setString(1, acctdesc);
+            LOGGER.info("H2: " + ps.toString());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            DBUtils.printSQLException(e);
+        }
+    }
 
     public List<AccountType> getAllAccountTypes() {
         List<AccountType> allAccountTypes = new ArrayList<>();
         try (Connection connection = DBUtils.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(SQL_SELECT_ALL);
-            LOGGER.info("H2: "+ps.toString());
+            LOGGER.info("H2: " + ps.toString());
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 allAccountTypes.add(new AccountType(
-                        rs.getInt("accttypeid"),
-                        rs.getString("acctdesc")
+                    rs.getInt("accttypeid"),
+                    rs.getString("acctdesc")
                 ));
             }
             rs.close();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             DBUtils.printSQLException(e);
         }
         return allAccountTypes;
     }
 
-    public AccountType getAccountType(Integer acctid) {
+
+    public String getAccountDesc(Integer acctTypeID) {
         try (Connection connection = DBUtils.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement(SQL_SELECT_BY_ACCTYPEID);
-            ps.setString(1, acctid.toString());
-            LOGGER.info("H2: "+ps.toString());
+            PreparedStatement ps = connection.prepareStatement(SQL_SELECT_BY_ACCTTYPEID);
+            ps.setInt(1, acctTypeID);
+            LOGGER.info("H2: " + ps.toString());
+            System.out.println("getacctDesc: "+ps.toString());
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return new AccountType(
-                        rs.getInt("accttypeid"),
-                        rs.getString("acctdesc")
-                );
+            StringBuilder sb = new StringBuilder();
+            while(rs.next()){
+                sb.append(rs.getString("acctdesc"));
             }
-            rs.close();
-        }
-        catch (SQLException e) {
+            return sb.toString();
+        } catch (SQLException e) {
             DBUtils.printSQLException(e);
         }
-        return null;
+        return "Unknown";
     }
+
+    public int getAccountTypeID(String acctDesc) {
+        try (Connection connection = DBUtils.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(SQL_SELECT_BY_ACCTDESC);
+            ps.setString(1, acctDesc);
+            LOGGER.info("H2: " + ps.toString());
+            System.out.println("accountDesc: "+acctDesc);
+            ResultSet rs = ps.executeQuery();
+            StringBuilder sb = new StringBuilder();
+            while(rs.next()){
+                return rs.getInt("accttypeid");
+            }
+        } catch (SQLException e) {
+            DBUtils.printSQLException(e);
+        }
+        return 222;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

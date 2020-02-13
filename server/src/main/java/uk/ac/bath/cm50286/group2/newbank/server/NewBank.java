@@ -3,10 +3,15 @@ package uk.ac.bath.cm50286.group2.newbank.server;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import uk.ac.bath.cm50286.group2.newbank.server.controller.AccountController;
+import uk.ac.bath.cm50286.group2.newbank.server.controller.AccountTypeController;
 import uk.ac.bath.cm50286.group2.newbank.server.controller.CustomerController;
+import uk.ac.bath.cm50286.group2.newbank.server.controller.TransactionController;
 import uk.ac.bath.cm50286.group2.newbank.server.dao.AccountDAO;
+import uk.ac.bath.cm50286.group2.newbank.server.dao.AccountTypeDAO;
 import uk.ac.bath.cm50286.group2.newbank.server.dao.CustomerDAO;
 import uk.ac.bath.cm50286.group2.newbank.server.model.Customer;
+
+import java.math.BigDecimal;
 
 public class NewBank {
 
@@ -15,12 +20,17 @@ public class NewBank {
 
 	// DAOs
 	private static final AccountDAO accountDao = new AccountDAO();
+	private static final AccountTypeDAO accountTypeDao = new AccountTypeDAO();
 	private static final CustomerDAO customerDao = new CustomerDAO();
+
 	// TODO: add new DAOs here
 
 	// Controllers
 	private static final AccountController accountController = new AccountController(accountDao);
+	private static final AccountTypeController accountTypeController = new AccountTypeController(accountTypeDao);
 	private static final CustomerController customerController = new CustomerController(customerDao,accountDao);
+	private static final TransactionController transactionController = new TransactionController();
+
 	// TODO: add new Controllers here
 
 	public static NewBank getBank() {
@@ -44,6 +54,11 @@ public class NewBank {
 		}
 		if (requestParams[0].equals("SHOWMYACCOUNTS")){
 			return accountController.getAccountsAsString(customer);
+
+		}
+		if (requestParams[0].equals("SHOWALLACCOUNTTYPES")){
+			return accountTypeController.getAllAccountTypes(customer);
+
 		}
 		else if (requestParams[0].equals("CREATECUSTOMER") && requestParams.length==9) {
 			return customerController.createCustomer(
@@ -53,13 +68,37 @@ public class NewBank {
 		else if (requestParams[0].equals("CREATECUSTOMER")) {
 			return "Invalid use of command\n FORMAT: First Name,Last Name, Username, Password, Email, Address, Postcode, NI number";
 		}
+		else if (requestParams[0].equals("SHOWALLACCOUNTS")){
+			return
+					"AccountID  | CustID     | AcctType   | Balance   \n"+
+					"-------------------------------------------------\n"+
+					accountController.getAllAccounts(customer);
+		}
+
+
 		else if (requestParams[0].equals("SHOWCUSTOMERS")) {
 			return
 					"CUSTID     | Firstname  | Lastname   | Username  \n"+
-					"-------------------------------------------------\n"+
+							"-------------------------------------------------\n"+
 					customerController.getOtherCustomers(customer);
 		}
+		else if (requestParams[0].equals("TRANSFER")&&requestParams.length==5){
+
+			String s=accountController.transfer(customer,requestParams[1],Integer.parseInt(requestParams[2]),
+					Integer.parseInt(requestParams[3]), new BigDecimal(requestParams[4]));
+			transactionController.createTransaction(customer,requestParams[1],Integer.parseInt(requestParams[2]),
+					Integer.parseInt(requestParams[3]), new BigDecimal(requestParams[4]));
+			return s;
+		}
+		else if(requestParams[0].equals("DEPOSIT")&&requestParams.length==3){
+			return accountController.deposit(customer, Integer.parseInt(requestParams[1]),new BigDecimal(requestParams[2]));
+		}
+
+
 			else return "FAIL";
+
+
+
 	}
 
 

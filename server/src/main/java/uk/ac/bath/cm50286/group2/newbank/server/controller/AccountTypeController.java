@@ -21,8 +21,15 @@ public class AccountTypeController {
         this.accountTypeDAO = accountTypeDAO;
     }
 
-    public AccountType getAccountType(int accttypeID) {
-        return accountTypeDAO.getAccountType(accttypeID);
+
+  public String getAllAccountTypes(Customer customer) {
+    List<AccountType> accountTypeList = accountTypeDAO.getAllAccountTypes();
+    LOGGER.info("Found "+accountTypeList.size()+" Account Types.");
+    StringBuilder sb = new StringBuilder();
+    for (AccountType accountType : accountTypeList) {
+        sb.append(accountType.toString());
+    }
+    return sb.toString();
     }
 
 

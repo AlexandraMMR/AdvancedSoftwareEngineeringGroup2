@@ -45,8 +45,8 @@ public class CustomerDAO {
     private static final String SQL_SELECT_BY_USERNAME = "SELECT * FROM customers " +
             " WHERE username = ?;";
     private static final String SQL_INSERT = "INSERT INTO customers" +
-            " (firstname, lastname, userName, password, email, address, postcode, ninumber) VALUES " +
-            " (?, ?, ?, ?, ?, ?, ?, ?);";
+        " (firstname, lastname, userName, password, email, address, postcode, ninumber) VALUES " +
+        " (?, ?, ?, ?, ?, ?, ?, ?);";
     private static final String SQL_UPDATE = "UPDATE customers SET " +
             " password = ?, " +
             " WHERE username = ?;";
@@ -121,7 +121,7 @@ public class CustomerDAO {
 
     public void insertCustomer(String firstname, String lastname, String username,String password,
                                String email, String address, String postcode, String ninumber ) {
-        try (Connection connection = DBUtils.getConnection()) { 
+        try (Connection connection = DBUtils.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(SQL_INSERT);
             ps.setString(1, firstname);
             ps.setString(2, lastname);
@@ -133,6 +133,7 @@ public class CustomerDAO {
             ps.setString(8, ninumber);
 
             LOGGER.info("H2: "+ps.toString());
+            System.out.print("InsertCustomer: "+ps.toString());
             ps.executeUpdate();
         }
         catch (SQLException e) {

@@ -2,6 +2,8 @@ package uk.ac.bath.cm50286.group2.newbank.server.model;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import uk.ac.bath.cm50286.group2.newbank.server.dao.AccountDAO;
+import uk.ac.bath.cm50286.group2.newbank.server.dao.AccountTypeDAO;
 
 import java.math.BigDecimal;
 
@@ -9,17 +11,19 @@ public class Account {
 
 	private static final Logger LOGGER = LogManager.getLogger(Account.class);
 
-	private Customer customer;
+	private int custid;
 	private String accountName;
 	private BigDecimal balance;
 
 	private Integer acctID;
-	private AccountType acctType;
+	private Integer acctTypeID;
+	private AccountTypeDAO accountTypeDAO = new AccountTypeDAO();
 
-	public Account(int acctID, Customer customer, AccountType acctType, BigDecimal balance) {
+
+	public Account(int acctID, int custid, int acctTypeID, BigDecimal balance) {
 		this.acctID = acctID;
-		this.customer = customer;
-		this.acctType = acctType;
+		this.custid = custid;
+		this.acctTypeID = acctTypeID;
 		this.balance = balance;
 	}
 
@@ -27,8 +31,8 @@ public class Account {
 		return acctID;
 	}
 
-	public Customer getCustomer() {
-		return customer;
+	public int getCustomerID() {
+		return custid;
 	}
 
 	public String getAccountName() {
@@ -44,12 +48,23 @@ public class Account {
 	}
 
 	public String toString() {
-		return (acctID.toString() + " " + acctType.getAcctdesc() + ": " + balance);
+		return (appendSpace(""+acctID) + " | " + appendSpace(""+custid )+ " | " +
+				appendSpace(getAcctType(acctTypeID)) + " | " + appendSpace(""+balance) + " \n");
 	}
 
-	public AccountType getAcctType(){
-		return acctType;
+	public String getAcctType(int acctTypeID){
+		return accountTypeDAO.getAccountDesc(acctTypeID);
 	}
+
+	public String appendSpace(String s) {
+		int spaces = 10 - s.length();
+		StringBuilder sb = new StringBuilder(s);
+		for (int i = 0; i < spaces; i++) {
+			sb.append(" ");
+		}
+		return sb.toString();
+	}
+
 
 
 

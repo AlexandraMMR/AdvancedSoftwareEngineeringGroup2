@@ -28,7 +28,7 @@ public class CustomerController {
         LOGGER.info("Found "+customerList.size()+" customers.");
         StringBuilder sb = new StringBuilder();
         for (Customer customer : customerList) {
-            if (!customer.equals(thisCustomer) && !customer.getUsername().equals("admin")) {
+            if (!customer.getCustid().equals(thisCustomer.getCustid()) && !customer.getUsername().equals("admin")) {
                 sb.append(customer.toString());
             }
         }
@@ -49,7 +49,7 @@ public class CustomerController {
         Customer newCustomer = customerDAO.getCustomer(username);
 
         AccountTypeDAO accountTypeDAO = new AccountTypeDAO();
-        accountDAO.insertAccount(newCustomer,accountTypeDAO.getAccountType(1));
+        accountDAO.insertAccount(newCustomer,accountTypeDAO.getAccountTypeID("Main"));
         return "Customer "+username+" and Main account created.";
     }
 

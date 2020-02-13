@@ -2,9 +2,7 @@ package uk.ac.bath.cm50286.group2.newbank.server.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import uk.ac.bath.cm50286.group2.newbank.server.dao.AccountDAO;
-import uk.ac.bath.cm50286.group2.newbank.server.dao.AccountTypeDAO;
-import uk.ac.bath.cm50286.group2.newbank.server.dao.CustomerDAO;
+import uk.ac.bath.cm50286.group2.newbank.server.dao.*;
 import uk.ac.bath.cm50286.group2.newbank.server.model.AccountType;
 
 import java.sql.Connection;
@@ -60,14 +58,32 @@ public class DBUtils {
         customerDao.createTable();
         // create admin user
         customerDao.insertCustomer("admin","admin","admin","admin",
-            "admin@admin.admin", "5 Admin Avenue", "AD5 M1N", "AD123456789");
+            "admin@admin.admin", "5 Admin Avenue", "AD5M1N", "AD123456789");
+
         AccountDAO accountDao = new AccountDAO();
         accountDao.createTable();
+
         AccountTypeDAO accountTypeDao = new AccountTypeDAO();
         accountTypeDao.createTable();
         accountTypeDao.insertAccountType("Main");
         accountTypeDao.insertAccountType("Savings");
         accountTypeDao.insertAccountType("ISA");
+
+
+        TransTypeDAO transTypeDAO = new TransTypeDAO();
+        transTypeDAO.createTable();
+        transTypeDAO.insertTransType("Deposit");
+        transTypeDAO.insertTransType("Withdrawal");
+        transTypeDAO.insertTransType("Transfer");
+        transTypeDAO.insertTransType("Loan");
+
+        TransactionDAO transactionDAO = new TransactionDAO();
+        transactionDAO.createTable();
+
+
+
+
+
 
     }
 

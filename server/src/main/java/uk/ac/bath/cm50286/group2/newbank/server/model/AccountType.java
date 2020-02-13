@@ -13,6 +13,10 @@ public class AccountType {
         this.acctdesc = acctdesc;
     }
 
+    public static Integer getAcctTypeID(Integer accttypeid) {
+    return accttypeid;
+    }
+
     public Integer getAccttypeid() {
         return accttypeid;
     }
@@ -20,6 +24,23 @@ public class AccountType {
     public String getAcctdesc() {
         return acctdesc;
     }
+
+    @Override
+    public String toString() {
+        return appendSpace(""+accttypeid) + " | " + appendSpace(acctdesc) +"\n";
+    }
+
+    public String appendSpace(String s) {
+        int spaces = 10 - s.length();
+        StringBuilder sb = new StringBuilder(s);
+        for (int i = 0; i < spaces; i++) {
+            sb.append(" ");
+        }
+        return sb.toString();
+    }
+
+
+
 
 
 
