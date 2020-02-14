@@ -93,7 +93,18 @@ public class NewBank {
 		else if(requestParams[0].equals("DEPOSIT")&&requestParams.length==3){
 			return accountController.deposit(customer, Integer.parseInt(requestParams[1]),new BigDecimal(requestParams[2]));
 		}
-
+		else if(requestParams[0].equals("HELP")&&requestParams.length==1) {
+			return
+					"Available Commands:" +
+							"SHOWMYACCOUNTS" +
+							"SHOWCUSTOMERS";
+		}
+		else if(requestParams[0].equals("HELPADMIN")&&requestParams.length==1) {
+			return
+					"Available Commands:" +
+							"DEPOSIT" +
+							"SHOWALLACCOUNTS";
+		}
 
 			else return "FAIL";
 

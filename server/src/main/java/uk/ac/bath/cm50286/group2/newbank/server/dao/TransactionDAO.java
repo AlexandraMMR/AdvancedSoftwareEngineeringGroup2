@@ -17,8 +17,8 @@ public class TransactionDAO {
       "transto INT," +
       "amount NUMERIC(10,2)," +
       " FOREIGN KEY (transtypeid) REFERENCES transtype(transtypeid)," +
-      " FOREIGN KEY (transfrom) REFERENCES customers(custid)," +
-      " FOREIGN KEY (transto) REFERENCES customers(custid)," +
+      " FOREIGN KEY (transfrom) REFERENCES account(acctid)," +
+      " FOREIGN KEY (transto) REFERENCES account(acctid)," +
       " balance NUMERIC(10,2));";
 
   private static final String SQL_INSERT = "INSERT INTO transaction" +
