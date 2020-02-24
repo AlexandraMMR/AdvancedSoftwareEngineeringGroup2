@@ -76,6 +76,7 @@ public class DBUtils {
         transTypeDAO.insertTransType("Withdrawal");
         transTypeDAO.insertTransType("Transfer");
         transTypeDAO.insertTransType("Loan");
+        transTypeDAO.insertTransType("Payment");
 
         TransactionDAO transactionDAO = new TransactionDAO();
         transactionDAO.createTable();

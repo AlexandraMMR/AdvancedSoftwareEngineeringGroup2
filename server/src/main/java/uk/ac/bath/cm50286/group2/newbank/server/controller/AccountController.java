@@ -18,6 +18,7 @@ public class AccountController {
 
     public AccountController(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
+        this.transactionController = transactionController;
     }
 
     public BigDecimal getBalance(int acctid) {
@@ -57,6 +58,17 @@ public class AccountController {
         }
     }
 
+    public String payCustomer (Customer customer, int transfrom, int transto, BigDecimal amount){
+        if(amount.compareTo(getBalance(transfrom)) > 1 ){
+            return "ERROR: Insufficient Funds.\n";
+        }  else{
+            accountDAO.depositToAccount(transto,amount);
+            transactionController.createTransaction(customer,"Payment",transfrom,transto,amount);
+            return amount + " paid by " + customer.getFirstName() + " from Acct ID:" + transfrom + " toAcct ID:" +
+                    transto + "\n";
+        }
+    }
+
     public String deposit(Customer customer, int acctid, BigDecimal amount) {
         if (!customer.getUsername().equals("admin")) {
             return "Only Admin can deposit";
@@ -83,4 +95,5 @@ public class AccountController {
             return sb.toString();
         }
     }
+
 }

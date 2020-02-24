@@ -90,6 +90,14 @@ public class NewBank {
 					Integer.parseInt(requestParams[3]), new BigDecimal(requestParams[4]));
 			return s;
 		}
+		else if(requestParams[0].equals("PAY")){
+			if (requestParams.length==5){
+				return accountController.payCustomer(customer,Integer.parseInt(requestParams[1]),
+						Integer.parseInt(requestParams[2]),new BigDecimal(requestParams[3]));
+			}else{
+			    return "INVALID NUMBER OF ARGUMENTS SUPPLIED. USAGE PAY <FROM ACCOUNT ID> <TO ACCOUNT ID> <AMOUNT>";
+            }
+		}
 		else if(requestParams[0].equals("DEPOSIT")&&requestParams.length==3){
 			return accountController.deposit(customer, Integer.parseInt(requestParams[1]),new BigDecimal(requestParams[2]));
 		}
@@ -97,7 +105,8 @@ public class NewBank {
 			return
 					"Available Commands:" +
 							"SHOWMYACCOUNTS" +
-							"SHOWCUSTOMERS";
+							"SHOWCUSTOMERS" +
+                            "PAY";
 		}
 		else if(requestParams[0].equals("HELPADMIN")&&requestParams.length==1) {
 			return
@@ -107,9 +116,6 @@ public class NewBank {
 		}
 
 			else return "FAIL";
-
-
-
 	}
 
 
