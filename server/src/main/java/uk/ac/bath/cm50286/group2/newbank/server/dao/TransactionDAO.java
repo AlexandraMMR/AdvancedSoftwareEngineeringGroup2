@@ -66,8 +66,8 @@ public class TransactionDAO {
       ResultSet rs = ps.executeQuery();
       while (rs.next()) {
         allTransactions.add(new Transaction(
-            rs.getInt("transactionid"),
-            rs.getInt("trantypeid"),
+            rs.getInt("transid"),
+            rs.getInt("transtypeid"),
             rs.getInt("transfrom"),
             rs.getInt("transto"),
             rs.getBigDecimal("amount")));

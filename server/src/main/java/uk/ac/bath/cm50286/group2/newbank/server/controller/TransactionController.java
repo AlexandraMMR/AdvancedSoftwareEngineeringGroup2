@@ -19,13 +19,11 @@ public class TransactionController {
   private TransactionDAO transactionDAO = new TransactionDAO();
   private TransTypeDAO transTypeDAO = new TransTypeDAO();
 
-  public String createTransaction(Customer customer, String transtype, int transfrom, int transto, BigDecimal amount) {
+  public String createTransaction(Customer customer, int transtypeid, int transfrom, int transto, BigDecimal amount) {
     LOGGER.info("Creating transaction From: " + transfrom + "  To: " + transto + " Amount" + amount);
-    int transtypeid = checkTransType(transtype);
     transactionDAO.insertTransaction(transtypeid, transfrom, transto, amount);
 
     return "Transaction created from Acct ID: " + transfrom + "  To Acct ID: " + transto + " Amount: " + amount;
-
   }
 
   private int checkTransType(String transtype) {

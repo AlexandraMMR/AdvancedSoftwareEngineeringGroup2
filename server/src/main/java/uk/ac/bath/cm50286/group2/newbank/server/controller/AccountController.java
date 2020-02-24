@@ -64,7 +64,8 @@ public class AccountController {
             return "Invalid acct ID";
         } else {
             if(accountDAO.depositToAccount(acctid, amount)){
-            transactionController.createTransaction(customer,"Deposit",1,acctid,amount);
+                int transtypeid=1;
+            transactionController.createTransaction(customer,transtypeid,1,acctid,amount);
                 return amount + " added to Acct ID:" + acctid + "\n";
             }
             return "Unable to add amount:" + amount + "to account: " + acctid;

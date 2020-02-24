@@ -44,7 +44,7 @@ public class Transaction {
 
   public String toString() {
     return (appendSpace(""+transactionid) + " | " + appendSpace(""+transtypeid )+ " | " +
-        appendSpace(""+transfrom) + " | " + appendSpace(""+transto) + appendSpace(""+amount)+ " \n");
+        appendSpace(""+transfrom) + " | " + appendSpace(""+transto) + " | " + appendSpace(""+amount)+ " \n");
   }
 
   public String appendSpace(String s) {

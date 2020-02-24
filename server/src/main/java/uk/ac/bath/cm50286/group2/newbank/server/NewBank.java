@@ -88,15 +88,15 @@ public class NewBank {
 
 			String s=accountController.transfer(customer,requestParams[1],Integer.parseInt(requestParams[2]),
 					Integer.parseInt(requestParams[3]), new BigDecimal(requestParams[4]));
-			transactionController.createTransaction(customer,requestParams[1],Integer.parseInt(requestParams[2]),
-					Integer.parseInt(requestParams[3]), new BigDecimal(requestParams[4]));
 			return s;
 		}
 		else if(requestParams[0].equals("DEPOSIT")&&requestParams.length==3){
+
 			return accountController.deposit(customer, Integer.parseInt(requestParams[1]),new BigDecimal(requestParams[2]));
 		}
 		else if(requestParams[0].equals("SHOWTRANSACTIONS")&&requestParams.length==1) {
-			return transactionController.getTransactions(customer);
+			return "TRANSID    | TRANSTYPE  | ACCTFROM   | ACCTTO     | AMOUNT    \n"+
+					transactionController.getTransactions(customer);
 		}
 		else if(requestParams[0].equals("HELP")&&requestParams.length==1) {
 			return
