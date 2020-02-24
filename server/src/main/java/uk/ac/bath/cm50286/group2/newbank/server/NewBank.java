@@ -53,7 +53,9 @@ public class NewBank {
 			System.out.println(i+"="+requestParams[i]);
 		}
 		if (requestParams[0].equals("SHOWMYACCOUNTS")){
-			return accountController.getAccountsAsString(customer);
+			return "AccountID  | CustID     | AcctType   | Balance   \n"+
+			"-------------------------------------------------\n"+
+			accountController.getAccountsAsString(customer);
 
 		}
 		if (requestParams[0].equals("SHOWALLACCOUNTTYPES")){
@@ -93,18 +95,24 @@ public class NewBank {
 		else if(requestParams[0].equals("DEPOSIT")&&requestParams.length==3){
 			return accountController.deposit(customer, Integer.parseInt(requestParams[1]),new BigDecimal(requestParams[2]));
 		}
+		else if(requestParams[0].equals("SHOWTRANSACTIONS")&&requestParams.length==1) {
+			return transactionController.getTransactions(customer);
+		}
 		else if(requestParams[0].equals("HELP")&&requestParams.length==1) {
 			return
 					"Available Commands:" +
-							"SHOWMYACCOUNTS" +
+							"SHOWMYACCOUNTS\n" +
 							"SHOWCUSTOMERS";
 		}
 		else if(requestParams[0].equals("HELPADMIN")&&requestParams.length==1) {
 			return
 					"Available Commands:" +
-							"DEPOSIT" +
+							"DEPOSIT\n" +
 							"SHOWALLACCOUNTS";
 		}
+
+
+
 
 			else return "FAIL";
 

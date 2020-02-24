@@ -3,6 +3,8 @@ package uk.ac.bath.cm50286.group2.newbank.server.model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.math.BigDecimal;
+
 public class Transaction {
 
   private static final Logger LOGGER = LogManager.getLogger(Transaction.class);
@@ -10,9 +12,9 @@ public class Transaction {
   private Integer transtypeid;
   private Integer transfrom;
   private Integer transto;
-  private Integer amount;
+  private BigDecimal amount;
 
-  public Transaction(int transactionid, int transtypeid, int transfrom, int transto, int amount){
+  public Transaction(int transactionid, int transtypeid, int transfrom, int transto, BigDecimal amount){
     this.transactionid=transactionid;
     this.transtypeid = transtypeid;
     this.transfrom=transfrom;
@@ -20,7 +22,7 @@ public class Transaction {
     this.amount = amount;
   }
 
-  public Integer getAmount() {
+  public BigDecimal getAmount() {
     return amount;
   }
 
@@ -39,5 +41,26 @@ public class Transaction {
   public Integer getTranstypeid() {
     return transtypeid;
   }
+
+  public String toString() {
+    return (appendSpace(""+transactionid) + " | " + appendSpace(""+transtypeid )+ " | " +
+        appendSpace(""+transfrom) + " | " + appendSpace(""+transto) + appendSpace(""+amount)+ " \n");
+  }
+
+  public String appendSpace(String s) {
+    int spaces = 10 - s.length();
+    StringBuilder sb = new StringBuilder(s);
+    for (int i = 0; i < spaces; i++) {
+      sb.append(" ");
+    }
+    return sb.toString();
+  }
+
+
+
+
+
+
+
 
 }

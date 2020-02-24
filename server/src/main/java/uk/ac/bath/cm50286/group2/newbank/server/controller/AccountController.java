@@ -14,7 +14,7 @@ public class AccountController {
     private static final Logger LOGGER = LogManager.getLogger(AccountController.class);
 
     private AccountDAO accountDAO;
-    private TransactionController transactionController;
+    private TransactionController transactionController=new TransactionController();
 
     public AccountController(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
@@ -63,9 +63,11 @@ public class AccountController {
         } else if (accountDAO.getCustIDforAcct(acctid) == 0) {
             return "Invalid acct ID";
         } else {
-            accountDAO.depositToAccount(acctid, amount);
-            transactionController.createTransaction(customer,"Deposit",-1,acctid,amount);
-            return amount + " added to Acct ID:" + acctid + "\n";
+            if(accountDAO.depositToAccount(acctid, amount)){
+            transactionController.createTransaction(customer,"Deposit",1,acctid,amount);
+                return amount + " added to Acct ID:" + acctid + "\n";
+            }
+            return "Unable to add amount:" + amount + "to account: " + acctid;
         }
     }
 

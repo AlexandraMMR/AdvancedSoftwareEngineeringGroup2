@@ -19,7 +19,7 @@ public class TransTypeDAO {
   private static final String SQL_INSERT = "INSERT INTO transtype" +
       " (transtypedesc) VALUES " +
       " (?);";
-  private static final String SQL_TRANSTYPEID = "SELECT TRANSTYPEID FROM TRANSTYPE" +
+  private static final String SQL_TRANSTYPEID = "SELECT TRANSTYPEID FROM TRANSTYPE " +
       "WHERE TRANSDESC = ?";
       ;
 
@@ -50,7 +50,9 @@ public class TransTypeDAO {
       PreparedStatement ps = connection.prepareStatement(SQL_TRANSTYPEID);
       ps.setString(1, transdesc);
       LOGGER.info("H2: " + ps.toString());
-      return ps.executeQuery().getInt("balance");
+      ResultSet rs = ps.executeQuery();
+      rs.next();
+      return rs.getInt("transtypeid");
     } catch (SQLException e) {
       DBUtils.printSQLException(e);
     }
