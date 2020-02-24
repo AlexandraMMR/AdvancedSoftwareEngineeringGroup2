@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.bath.cm50286.group2.newbank.server.dao.*;
 import uk.ac.bath.cm50286.group2.newbank.server.model.AccountType;
+import uk.ac.bath.cm50286.group2.newbank.server.model.Customer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -69,6 +70,10 @@ public class DBUtils {
         accountTypeDao.insertAccountType("Savings");
         accountTypeDao.insertAccountType("ISA");
 
+
+        accountDao.insertAccount(new Customer(1,"admin","admin","admin",
+            "admin","admin@admin.admin", "5 Admin Avenue", "AD5M1N",
+            "AD123456789"), 1);
 
         TransTypeDAO transTypeDAO = new TransTypeDAO();
         transTypeDAO.createTable();

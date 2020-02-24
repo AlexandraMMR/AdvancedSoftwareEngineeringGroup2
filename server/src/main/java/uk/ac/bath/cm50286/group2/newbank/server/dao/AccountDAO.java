@@ -23,37 +23,37 @@ public class AccountDAO {
             " balance NUMERIC(10,2), " +
             " PRIMARY KEY (customer,name)," +
             " FOREIGN KEY (customer) REFERENCES customers(username))";*/
-    private static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS accounts" +
+    private static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS account" +
         "(acctid INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
         "custid INT," +
         "accttypeid INT," +
         " FOREIGN KEY (custid) REFERENCES customers(custid)," +
-        " FOREIGN KEY (accttypeid) REFERENCES accounts(accttypeid)," +
+        " FOREIGN KEY (accttypeid) REFERENCES account(accttypeid)," +
         " balance NUMERIC(10,2));";
 
-    private static final String SQL_SELECT_BY_CUSTID = "SELECT * FROM accounts " +
+    private static final String SQL_SELECT_BY_CUSTID = "SELECT * FROM account " +
         " WHERE custid = ?;";
-    private static final String SQL_SELECT_ALL_ACCOUNTS = "SELECT * FROM accounts; ";
+    private static final String SQL_SELECT_ALL_ACCOUNTS = "SELECT * FROM account; ";
 
-    private static final String SQL_INSERT = "INSERT INTO accounts" +
+    private static final String SQL_INSERT = "INSERT INTO account" +
         " (custid, accttypeid, balance) VALUES " +
         " (?, ?, ?);";
-    private static final String SQL_UPDATE = "UPDATE accounts SET " +
+    private static final String SQL_UPDATE = "UPDATE account SET " +
         " balance = ? " +
         " WHERE custid = ? " +
         " AND accttypeid = ?;";
-    private static final String SQL_DELETE = "DELETE FROM accounts " +
+    private static final String SQL_DELETE = "DELETE FROM account " +
         " WHERE custid = ? " +
         " AND accttypeid = ?;";
-    private static final String SQL_GET_ACCT_ID = "SELECT acctid from accounts" +
+    private static final String SQL_GET_ACCT_ID = "SELECT acctid from account" +
         "WHERE custid= ?;";
-    private static final String SQL_GET_CUST_ID = "SELECT custid from accounts " +
+    private static final String SQL_GET_CUST_ID = "SELECT custid from account " +
         "WHERE acctid = ?;";
-    private static final String SQL_GET_ACCT_BALANCE = "SELECT balance from accounts " +
+    private static final String SQL_GET_ACCT_BALANCE = "SELECT balance from account " +
         "WHERE acctid= ?;";
-    private static final String SQL_ADD_ACCT_BALANCE = "UPDATE accounts  " +
+    private static final String SQL_ADD_ACCT_BALANCE = "UPDATE account  " +
         "set balance=balance+? WHERE acctid=?;";
-    private static final String SQL_SELECT_ALL = "SELECT * from accounts;";
+    private static final String SQL_SELECT_ALL = "SELECT * from account;";
 
     public void createTable() {
         try (Connection connection = DBUtils.getConnection()) {
@@ -172,7 +172,7 @@ public class AccountDAO {
         return new BigDecimal(0);
     }
 
-    public void depositToAccount(int acctid, BigDecimal amount) {
+    public boolean depositToAccount(int acctid, BigDecimal amount) {
         try (Connection connection = DBUtils.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(SQL_ADD_ACCT_BALANCE);
             ps.setBigDecimal(1, amount);
@@ -180,8 +180,10 @@ public class AccountDAO {
 
             LOGGER.info("H2: " + ps.toString());
             ps.executeUpdate();
+            return true;
         } catch (SQLException e) {
             DBUtils.printSQLException(e);
+            return false;
         }
 //        return new BigDecimal(0);
 

@@ -19,9 +19,12 @@ public class TransTypeDAO {
   private static final String SQL_INSERT = "INSERT INTO transtype" +
       " (transtypedesc) VALUES " +
       " (?);";
-  private static final String SQL_TRANSTYPEID = "SELECT TRANSTYPEID FROM TRANSTYPE" +
+  private static final String SQL_TRANSTYPEID = "SELECT TRANSTYPEID FROM TRANSTYPE " +
       "WHERE TRANSDESC = ?";
-      ;
+  private static final String SQL_SELECT_BY_TRANSTYPEID  = "SELECT transtypedesc from transtype" +
+      " WHERE transtypeid = ?;";
+  private static final String SQL_SELECT_BY_TRANSDESC = "SELECT transtypeid from transtype" +
+      " WHERE transtypedesc = ?;";
 
   public void createTable() {
     try (Connection connection = DBUtils.getConnection()) {
@@ -50,7 +53,9 @@ public class TransTypeDAO {
       PreparedStatement ps = connection.prepareStatement(SQL_TRANSTYPEID);
       ps.setString(1, transdesc);
       LOGGER.info("H2: " + ps.toString());
-      return ps.executeQuery().getInt("balance");
+      ResultSet rs = ps.executeQuery();
+      rs.next();
+      return rs.getInt("transtypeid");
     } catch (SQLException e) {
       DBUtils.printSQLException(e);
     }
@@ -59,4 +64,37 @@ public class TransTypeDAO {
   }
 
 
+  public String getTransDesc(Integer transtypeid) {
+    try (Connection connection = DBUtils.getConnection()) {
+      PreparedStatement ps = connection.prepareStatement(SQL_SELECT_BY_TRANSTYPEID);
+      ps.setInt(1, transtypeid);
+      LOGGER.info("H2: " + ps.toString());
+      System.out.println("getTransDesc: "+ps.toString());
+      ResultSet rs = ps.executeQuery();
+      StringBuilder sb = new StringBuilder();
+      while(rs.next()){
+        sb.append(rs.getString("transtypedesc"));
+      }
+      return sb.toString();
+    } catch (SQLException e) {
+      DBUtils.printSQLException(e);
+    }
+    return "Unknown";
+  }
+
+  public int getTransIDbyDesc(String transDesc) {
+    try (Connection connection = DBUtils.getConnection()) {
+      PreparedStatement ps = connection.prepareStatement(SQL_SELECT_BY_TRANSDESC);
+      ps.setString(1, transDesc);
+      LOGGER.info("H2: " + ps.toString());
+      System.out.println("getTransID: "+ps.toString());
+      ResultSet rs = ps.executeQuery();
+      while(rs.next()){
+        return rs.getInt("transtypeid");
+      }
+    } catch (SQLException e) {
+      DBUtils.printSQLException(e);
+    }
+    return 0;
+  }
 }
