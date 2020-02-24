@@ -96,6 +96,7 @@ public class NewBank {
 		}
 		else if(requestParams[0].equals("SHOWTRANSACTIONS")&&requestParams.length==1) {
 			return "TRANSID    | TRANSTYPE  | ACCTFROM   | ACCTTO     | AMOUNT    \n"+
+					"--------------------------------------------------------------\n"+
 					transactionController.getTransactions(customer);
 		}
 		else if(requestParams[0].equals("HELP")&&requestParams.length==1) {

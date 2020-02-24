@@ -2,6 +2,8 @@ package uk.ac.bath.cm50286.group2.newbank.server.model;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import uk.ac.bath.cm50286.group2.newbank.server.controller.TransTypeController;
+import uk.ac.bath.cm50286.group2.newbank.server.dao.TransTypeDAO;
 
 import java.math.BigDecimal;
 
@@ -13,6 +15,7 @@ public class Transaction {
   private Integer transfrom;
   private Integer transto;
   private BigDecimal amount;
+  private TransTypeController transTypeController= new TransTypeController(new TransTypeDAO());
 
   public Transaction(int transactionid, int transtypeid, int transfrom, int transto, BigDecimal amount){
     this.transactionid=transactionid;
@@ -43,8 +46,12 @@ public class Transaction {
   }
 
   public String toString() {
-    return (appendSpace(""+transactionid) + " | " + appendSpace(""+transtypeid )+ " | " +
+    return (appendSpace(""+transactionid) + " | " + appendSpace(""+getTransType(transtypeid) )+ " | " +
         appendSpace(""+transfrom) + " | " + appendSpace(""+transto) + " | " + appendSpace(""+amount)+ " \n");
+  }
+
+  private String getTransType(Integer transtypeid) {
+    return transTypeController.getTransDescByTypeID(transtypeid);
   }
 
   public String appendSpace(String s) {
