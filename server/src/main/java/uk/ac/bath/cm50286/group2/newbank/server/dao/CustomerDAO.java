@@ -34,7 +34,7 @@ public class CustomerDAO {
         "(custid INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
         " firstname VARCHAR(255) NOT NULL," +
         " lastname VARCHAR(255) NOT NULL," +
-        " username VARCHAR(255) NOT NULL," +
+        " username VARCHAR(255) NOT NULL UNIQUE," +
         " password VARCHAR(255) NOT NULL," +
         " email VARCHAR(255) NOT NULL, " +
         " address VARCHAR(255) NOT NULL, " +
