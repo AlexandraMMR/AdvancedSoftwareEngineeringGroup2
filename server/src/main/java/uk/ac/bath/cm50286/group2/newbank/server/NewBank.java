@@ -1,7 +1,7 @@
 package uk.ac.bath.cm50286.group2.newbank.server;
 
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import uk.ac.bath.cm50286.group2.newbank.server.controller.AccountController;
 import uk.ac.bath.cm50286.group2.newbank.server.controller.AccountTypeController;
 import uk.ac.bath.cm50286.group2.newbank.server.controller.CustomerController;
@@ -45,15 +45,17 @@ public class NewBank {
 		return null;
 	}
 
+	// Hayley was here
+
 	// commands from the NewBank customer are processed in this method
 	public synchronized String processRequest(Customer customer, String request) {
 		String[] requestParams = request.split("\\s+");
-		System.out.println("Request has "+requestParams.length+" params.");
-		for (int i=0; i<requestParams.length; i++) {
-			System.out.println(i+"="+requestParams[i]);
+		System.out.println("Request has " + requestParams.length + " params.");
+		for (int i = 0; i < requestParams.length; i++) {
+			System.out.println(i + "=" + requestParams[i]);
 		}
-		if (requestParams[0].equals("SHOWMYACCOUNTS")){
-			return "AccountID  | CustID     | AcctType   | Balance   \n"+
+		if (requestParams[0].equals("SHOWMYACCOUNTS")) {
+			return "AccountID  | CustID     | AcctType   | Balance   \n" +
 			"-------------------------------------------------\n"+
 			accountController.getAccountsAsString(customer);
 
