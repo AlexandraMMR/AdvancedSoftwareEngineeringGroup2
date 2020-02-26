@@ -18,6 +18,7 @@ public class TransType {
     return transtypeid;
   }
 
+
   public String getTranstypedesc() {
     return transtypedesc;
   }

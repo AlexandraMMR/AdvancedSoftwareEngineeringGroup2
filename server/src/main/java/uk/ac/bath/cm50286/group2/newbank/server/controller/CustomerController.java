@@ -53,6 +53,7 @@ public class CustomerController {
         return "Customer "+username+" and Main account created.";
     }
 
+
     public void updatePassword(Customer customer,String newPassword) {
         customerDAO.updateCustomer(customer.getUsername(),newPassword,customer.getFirstName());
     }

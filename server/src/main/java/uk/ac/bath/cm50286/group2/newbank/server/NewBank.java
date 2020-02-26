@@ -107,6 +107,7 @@ public class NewBank {
 							"SHOWMYACCOUNTS\n" +
 							"SHOWCUSTOMERS";
 		}
+
 		else if(requestParams[0].equals("HELPADMIN")&&requestParams.length==1) {
 			return
 					"Available Commands:" +

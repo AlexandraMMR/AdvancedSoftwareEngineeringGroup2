@@ -31,6 +31,7 @@ public class Customer {
 	}
 
 
+
 	public Integer getCustid() {
 		return custid;
 	}
