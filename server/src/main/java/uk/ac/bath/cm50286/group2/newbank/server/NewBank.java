@@ -45,7 +45,7 @@ public class NewBank {
 		return null;
 	}
 
-	// Hayley was here
+	// Hayley is here
 
 	// commands from the NewBank customer are processed in this method
 	public synchronized String processRequest(Customer customer, String request) {
