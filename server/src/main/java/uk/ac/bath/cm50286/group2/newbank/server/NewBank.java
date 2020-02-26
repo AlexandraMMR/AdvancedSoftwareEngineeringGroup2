@@ -88,22 +88,32 @@ public class NewBank {
 
 			String s=accountController.transfer(customer,requestParams[1],Integer.parseInt(requestParams[2]),
 					Integer.parseInt(requestParams[3]), new BigDecimal(requestParams[4]));
+			transactionController.createTransaction(customer, Integer.parseInt(requestParams[1]), Integer.parseInt(requestParams[2]),
+					Integer.parseInt(requestParams[3]), new BigDecimal(requestParams[4]));
 			return s;
 		}
 		else if(requestParams[0].equals("DEPOSIT")&&requestParams.length==3){
 			return accountController.deposit(customer, Integer.parseInt(requestParams[1]),new BigDecimal(requestParams[2]));
-		} else if (requestParams[0].equals("PAY") && requestParams.length == 4) {
-			return accountController.payCustomer(customer, Integer.parseInt(requestParams[1]), Integer.parseInt(requestParams[2]),
-					new BigDecimal(requestParams[3]));
-		} else if(requestParams[0].equals("HELP")&&requestParams.length==1) {
+		}
+		else if(requestParams[0].equals("SHOWTRANSACTIONS")&&requestParams.length==1) {
+			return "TRANSID    | TRANSTYPE  | ACCTFROM   | ACCTTO     | AMOUNT    \n"+
+					"--------------------------------------------------------------\n"+
+					transactionController.getTransactions(customer);
+		}
+    else if (requestParams[0].equals("PAY") && requestParams.length == 4) {
+      return accountController.payCustomer(customer, Integer.parseInt(requestParams[1]), Integer.parseInt(requestParams[2]),
+          new BigDecimal(requestParams[3]));
+    }
+    else if(requestParams[0].equals("HELP")&&requestParams.length==1) {
 			return
 					"Available Commands:" +
-							"SHOWMYACCOUNTS" +
+							"SHOWMYACCOUNTS\n" +
 							"SHOWCUSTOMERS";
-		} else if(requestParams[0].equals("HELPADMIN")&&requestParams.length==1) {
+		}
+		else if(requestParams[0].equals("HELPADMIN")&&requestParams.length==1) {
 			return
 					"Available Commands:" +
-							"DEPOSIT" +
+							"DEPOSIT\n" +
 							"SHOWALLACCOUNTS";
 		} else return "FAIL";
 
