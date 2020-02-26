@@ -45,8 +45,6 @@ public class NewBank {
 		return null;
 	}
 
-	// Hayley is here
-
 	// commands from the NewBank customer are processed in this method
 	public synchronized String processRequest(Customer customer, String request) {
 		String[] requestParams = request.split("\\s+");
@@ -93,7 +91,6 @@ public class NewBank {
 			return s;
 		}
 		else if(requestParams[0].equals("DEPOSIT")&&requestParams.length==3){
-
 			return accountController.deposit(customer, Integer.parseInt(requestParams[1]),new BigDecimal(requestParams[2]));
 		}
 		else if(requestParams[0].equals("SHOWTRANSACTIONS")&&requestParams.length==1) {
@@ -101,24 +98,22 @@ public class NewBank {
 					"--------------------------------------------------------------\n"+
 					transactionController.getTransactions(customer);
 		}
-		else if(requestParams[0].equals("HELP")&&requestParams.length==1) {
+    else if (requestParams[0].equals("PAY") && requestParams.length == 4) {
+      return accountController.payCustomer(customer, Integer.parseInt(requestParams[1]), Integer.parseInt(requestParams[2]),
+          new BigDecimal(requestParams[3]));
+    }
+    else if(requestParams[0].equals("HELP")&&requestParams.length==1) {
 			return
 					"Available Commands:" +
 							"SHOWMYACCOUNTS\n" +
 							"SHOWCUSTOMERS";
 		}
-
 		else if(requestParams[0].equals("HELPADMIN")&&requestParams.length==1) {
 			return
 					"Available Commands:" +
 							"DEPOSIT\n" +
 							"SHOWALLACCOUNTS";
-		}
-
-
-
-
-			else return "FAIL";
+		} else return "FAIL";
 
 
 

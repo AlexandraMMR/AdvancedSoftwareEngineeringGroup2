@@ -3,7 +3,6 @@ package uk.ac.bath.cm50286.group2.newbank.server.util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.bath.cm50286.group2.newbank.server.dao.*;
-import uk.ac.bath.cm50286.group2.newbank.server.model.AccountType;
 import uk.ac.bath.cm50286.group2.newbank.server.model.Customer;
 
 import java.sql.Connection;
@@ -83,6 +82,7 @@ public class DBUtils {
         transTypeDAO.insertTransType("Withdrawal");
         transTypeDAO.insertTransType("Transfer");
         transTypeDAO.insertTransType("Loan");
+        transTypeDAO.insertTransType("Pay");
 
         TransactionDAO transactionDAO = new TransactionDAO();
         transactionDAO.createTable();

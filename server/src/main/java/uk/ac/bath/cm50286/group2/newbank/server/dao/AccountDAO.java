@@ -3,9 +3,7 @@ package uk.ac.bath.cm50286.group2.newbank.server.dao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.bath.cm50286.group2.newbank.server.model.Account;
-import uk.ac.bath.cm50286.group2.newbank.server.model.AccountType;
 import uk.ac.bath.cm50286.group2.newbank.server.model.Customer;
-import uk.ac.bath.cm50286.group2.newbank.server.dao.AccountTypeDAO;
 import uk.ac.bath.cm50286.group2.newbank.server.util.DBUtils;
 
 import java.math.BigDecimal;
@@ -45,7 +43,7 @@ public class AccountDAO {
     private static final String SQL_DELETE = "DELETE FROM account " +
         " WHERE custid = ? " +
         " AND accttypeid = ?;";
-    private static final String SQL_GET_ACCT_ID = "SELECT acctid from account" +
+    private static final String SQL_GET_ACCT_ID = "SELECT acctid from account " +
         "WHERE custid= ?;";
     private static final String SQL_GET_CUST_ID = "SELECT custid from account " +
         "WHERE acctid = ?;";
@@ -53,7 +51,11 @@ public class AccountDAO {
         "WHERE acctid= ?;";
     private static final String SQL_ADD_ACCT_BALANCE = "UPDATE account  " +
         "set balance=balance+? WHERE acctid=?;";
+    private static final String SQL_SUBTRACT_ACCT_BALANCE = "UPDATE account  " +
+            "set balance=balance-? WHERE acctid=?;";
     private static final String SQL_SELECT_ALL = "SELECT * from account;";
+    private static final String SQL_SELECT_ACCOUNT = "SELECT * from account " +
+            "WHERE acctid = ?;";
 
     public void createTable() {
         try (Connection connection = DBUtils.getConnection()) {
@@ -190,6 +192,24 @@ public class AccountDAO {
 
     }
 
+    public boolean withdrawfromAccount(int acctid, BigDecimal amount) {
+        try (Connection connection = DBUtils.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(SQL_SUBTRACT_ACCT_BALANCE);
+            ps.setBigDecimal(1, amount);
+            ps.setInt(2, acctid);
+
+            LOGGER.info("H2: " + ps.toString());
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            DBUtils.printSQLException(e);
+            return false;
+        }
+//        return new BigDecimal(0);
+
+    }
+
+
     public List<Account> getAllAccounts() {
         List<Account> allAccounts = new ArrayList<>();
         try (Connection connection = DBUtils.getConnection()) {
@@ -209,5 +229,22 @@ public class AccountDAO {
         }
         return allAccounts;
     }
+
+    public Account getAccount(int accountID) {
+        Account account;
+        try (Connection connection = DBUtils.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(SQL_SELECT_ACCOUNT);
+            ps.setInt(1, accountID);
+            LOGGER.info("H2: " + ps.toString());
+            ResultSet rs = ps.executeQuery();
+            account = new Account(rs.getInt("acctid"), rs.getInt("custid"), rs.getInt("accttypeid"), rs.getBigDecimal("balance"));
+            rs.close();
+            return account;
+        } catch (SQLException e) {
+            DBUtils.printSQLException(e);
+        }
+        return null;
+    }
+
 
 }
