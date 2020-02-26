@@ -49,6 +49,7 @@ public class NewBankClientHandler extends Thread{
 					String response = bank.processRequest(customer, request);
 					out.println(response);
 				}
+
 			}
 			else {
 				out.println("Log In Failed");

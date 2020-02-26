@@ -33,6 +33,7 @@ public class AccountTypeController {
     }
 
 
+
  /*   public String getAccountsAsString(Customer customer) {
         List<Account> accountList = getAccounts(customer);
         LOGGER.info("Found "+accountList.size()+" accounts for customer "+customer.getUsername()+".");

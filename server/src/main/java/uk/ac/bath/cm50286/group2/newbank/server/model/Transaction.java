@@ -25,6 +25,7 @@ public class Transaction {
     this.amount = amount;
   }
 
+
   public BigDecimal getAmount() {
     return amount;
   }

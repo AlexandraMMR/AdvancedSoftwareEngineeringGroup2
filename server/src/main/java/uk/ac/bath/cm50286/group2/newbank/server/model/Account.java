@@ -56,6 +56,7 @@ public class Account {
 		return accountTypeDAO.getAccountDesc(acctTypeID);
 	}
 
+
 	public String appendSpace(String s) {
 		int spaces = 10 - s.length();
 		StringBuilder sb = new StringBuilder(s);

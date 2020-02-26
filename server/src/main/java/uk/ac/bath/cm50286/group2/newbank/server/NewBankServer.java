@@ -12,11 +12,11 @@ public class NewBankServer extends Thread{
 
 	private static final Logger LOGGER = LogManager.getLogger(NewBankServer.class);
 	private ServerSocket server;
-	
+
 	public NewBankServer(int port) throws IOException {
 		server = new ServerSocket(port);
 	}
-	
+
 	public void run() {
 		// starts up a new client handler thread to receive incoming connections and process requests
 		System.out.println("New Bank Server listening on " + server.getLocalPort());
@@ -26,6 +26,7 @@ public class NewBankServer extends Thread{
 				NewBankClientHandler clientHandler = new NewBankClientHandler(s);
 				clientHandler.start();
 			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -38,7 +39,7 @@ public class NewBankServer extends Thread{
 			}
 		}
 	}
-	
+
 	public static void main(String[] args) throws IOException, SQLException {
 		// starts a new NewBankServer thread on a specified port number
 		LOGGER.info("Starting NewBankServer on port 14002");

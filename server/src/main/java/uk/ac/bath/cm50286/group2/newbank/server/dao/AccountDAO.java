@@ -84,6 +84,7 @@ public class AccountDAO {
                     rs.getBigDecimal("balance")));
             }
             rs.close();
+
         } catch (SQLException e) {
             DBUtils.printSQLException(e);
         }

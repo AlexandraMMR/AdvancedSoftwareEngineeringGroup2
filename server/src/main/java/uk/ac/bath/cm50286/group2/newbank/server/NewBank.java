@@ -88,8 +88,6 @@ public class NewBank {
 
 			String s=accountController.transfer(customer,requestParams[1],Integer.parseInt(requestParams[2]),
 					Integer.parseInt(requestParams[3]), new BigDecimal(requestParams[4]));
-			transactionController.createTransaction(customer, Integer.parseInt(requestParams[1]), Integer.parseInt(requestParams[2]),
-					Integer.parseInt(requestParams[3]), new BigDecimal(requestParams[4]));
 			return s;
 		}
 		else if(requestParams[0].equals("DEPOSIT")&&requestParams.length==3){

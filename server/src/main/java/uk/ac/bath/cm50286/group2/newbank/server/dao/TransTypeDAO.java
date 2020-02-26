@@ -64,6 +64,7 @@ public class TransTypeDAO {
   }
 
 
+
   public String getTransDesc(Integer transtypeid) {
     try (Connection connection = DBUtils.getConnection()) {
       PreparedStatement ps = connection.prepareStatement(SQL_SELECT_BY_TRANSTYPEID);

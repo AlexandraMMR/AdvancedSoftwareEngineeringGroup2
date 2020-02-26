@@ -63,6 +63,7 @@ public class TransactionDAO {
 
   }
 
+
   public List<Transaction> getAllTransactions() {
 
     List<Transaction> allTransactions = new ArrayList<>();

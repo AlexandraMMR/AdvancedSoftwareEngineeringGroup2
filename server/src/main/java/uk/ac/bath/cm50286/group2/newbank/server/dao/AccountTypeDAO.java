@@ -44,6 +44,7 @@ public class AccountTypeDAO {
         }
     }
 
+
     public void insertAccountType(String acctdesc) {
         try (Connection connection = DBUtils.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(SQL_INSERT);

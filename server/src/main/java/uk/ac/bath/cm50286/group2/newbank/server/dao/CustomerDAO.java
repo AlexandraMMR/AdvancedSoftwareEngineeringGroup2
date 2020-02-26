@@ -152,6 +152,7 @@ public class CustomerDAO {
         catch (SQLException e) {
             DBUtils.printSQLException(e);
         }
+
     }
 
     public void deleteCustomer(String username) {
