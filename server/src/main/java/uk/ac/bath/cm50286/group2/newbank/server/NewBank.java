@@ -1,7 +1,7 @@
 package uk.ac.bath.cm50286.group2.newbank.server;
 
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import uk.ac.bath.cm50286.group2.newbank.server.controller.AccountController;
 import uk.ac.bath.cm50286.group2.newbank.server.controller.AccountTypeController;
 import uk.ac.bath.cm50286.group2.newbank.server.controller.CustomerController;
@@ -86,27 +86,26 @@ public class NewBank {
 
 			String s=accountController.transfer(customer,requestParams[1],Integer.parseInt(requestParams[2]),
 					Integer.parseInt(requestParams[3]), new BigDecimal(requestParams[4]));
-			transactionController.createTransaction(customer,requestParams[1],Integer.parseInt(requestParams[2]),
+			transactionController.createTransaction(customer, Integer.parseInt(requestParams[1]), Integer.parseInt(requestParams[2]),
 					Integer.parseInt(requestParams[3]), new BigDecimal(requestParams[4]));
 			return s;
 		}
 		else if(requestParams[0].equals("DEPOSIT")&&requestParams.length==3){
 			return accountController.deposit(customer, Integer.parseInt(requestParams[1]),new BigDecimal(requestParams[2]));
-		}
-		else if(requestParams[0].equals("HELP")&&requestParams.length==1) {
+		} else if (requestParams[0].equals("PAY") && requestParams.length == 4) {
+			return accountController.payCustomer(customer, Integer.parseInt(requestParams[1]), Integer.parseInt(requestParams[2]),
+					new BigDecimal(requestParams[3]));
+		} else if(requestParams[0].equals("HELP")&&requestParams.length==1) {
 			return
 					"Available Commands:" +
 							"SHOWMYACCOUNTS" +
 							"SHOWCUSTOMERS";
-		}
-		else if(requestParams[0].equals("HELPADMIN")&&requestParams.length==1) {
+		} else if(requestParams[0].equals("HELPADMIN")&&requestParams.length==1) {
 			return
 					"Available Commands:" +
 							"DEPOSIT" +
 							"SHOWALLACCOUNTS";
-		}
-
-			else return "FAIL";
+		} else return "FAIL";
 
 
 

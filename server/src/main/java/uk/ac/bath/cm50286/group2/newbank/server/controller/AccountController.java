@@ -20,7 +20,6 @@ public class AccountController {
 
     public AccountController(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
-        this.transactionController = transactionController;
     }
 
     public BigDecimal getBalance(int acctid) {
@@ -63,10 +62,19 @@ public class AccountController {
     public String payCustomer (Customer customer, int transfrom, int transto, BigDecimal amount){
         if(amount.compareTo(getBalance(transfrom)) > 1 ){
             return "ERROR: Insufficient Funds.\n";
-        }  else{
+        } else if (!accountDAO.getAcctIDforCustomer(customer).contains(transfrom)) {
+            return "ERROR: Incorrect source account number specified";
+        }
+        /*else if(!accountDAO.getAllAccounts().contains(accountDAO.getAccount(transto))){
+            return "ERROR: Incorrect destination account number specified";
+        }*/
+        else {
+            accountDAO.withdrawfromAccount(transfrom, amount);
             accountDAO.depositToAccount(transto,amount);
-            transactionController.createTransaction(customer,"Payment",transfrom,transto,amount);
-            return amount + " paid by " + customer.getFirstName() + " from Acct ID:" + transfrom + " toAcct ID:" +
+            int transtypeid = transTypeController.getTransTypeIDByDesc("Pay");
+            transactionController.createTransaction(customer, transtypeid, transfrom, transto, amount);
+            return "Paid " + amount + " from Account: " + transfrom + " to Customer: " +
+                    accountDAO.getCustIDforAcct(transto) + " Account: " +
                     transto + "\n";
         }
     }
