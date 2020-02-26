@@ -30,6 +30,12 @@ public class TransactionDAO {
       " (?, ?, ?, ?);";
   private static final String SQL_SELECT_ALL = "SELECT * from TRANSACTION;";
 
+  private static final String SQL_FILTER_BY_CUSTID = "SELECT transaction.* from TRANSACTION " +
+      "left join account as A1 on TRANSACTION.TRANSFROM=A1.ACCTID\n" +
+      "left join ACCOUNT as A2 on TRANSACTION.TRANSTO=A2.ACCTID\n" +
+      "where A1.custid=3 or A2.CUSTID=?;";
+
+
 
   public void createTable() {
     try (Connection connection = DBUtils.getConnection()) {
@@ -81,7 +87,25 @@ public class TransactionDAO {
   }
 
   public List<Transaction> getTransactions(Customer customer) {
-    return null;
+    List<Transaction> allTransactions = new ArrayList<>();
+    try (Connection connection = DBUtils.getConnection()) {
+      PreparedStatement ps = connection.prepareStatement(SQL_FILTER_BY_CUSTID);
+      ps.setInt(1, customer.getCustid());
+      LOGGER.info("H2: " + ps.toString());
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        allTransactions.add(new Transaction(
+            rs.getInt("transid"),
+            rs.getInt("transtypeid"),
+            rs.getInt("transfrom"),
+            rs.getInt("transto"),
+            rs.getBigDecimal("amount")));
+      }
+      rs.close();
+    } catch (SQLException e) {
+      DBUtils.printSQLException(e);
+    }
+    return allTransactions;
   }
 }
 
