@@ -3,6 +3,7 @@ package uk.ac.bath.cm50286.group2.newbank.server.controller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.bath.cm50286.group2.newbank.server.dao.AccountDAO;
+import uk.ac.bath.cm50286.group2.newbank.server.dao.AccountTypeDAO;
 import uk.ac.bath.cm50286.group2.newbank.server.dao.TransTypeDAO;
 import uk.ac.bath.cm50286.group2.newbank.server.model.Account;
 import uk.ac.bath.cm50286.group2.newbank.server.model.Customer;
@@ -11,21 +12,24 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.requireNonNull;
+
 public class AccountController {
 
     private static final Logger LOGGER = LogManager.getLogger(AccountController.class);
 
     private AccountDAO accountDAO;
-    private TransactionController transactionController=new TransactionController();
-    private TransTypeController transTypeController=new TransTypeController(new TransTypeDAO());
+    private AccountTypeDAO accountTypeDAO;
+    private TransactionController transactionController = new TransactionController();
+    private TransTypeController transTypeController = new TransTypeController(new TransTypeDAO());
 
-    public AccountController(AccountDAO accountDAO) {
+    public AccountController(final AccountDAO accountDAO, final AccountTypeDAO accountTypeDAO) {
         this.accountDAO = accountDAO;
+        this.accountTypeDAO = accountTypeDAO;
     }
 
     public BigDecimal getBalance(int acctid) {
         return accountDAO.getAcctBalance(acctid);
-
     }
 
     public List<Account> getAccounts(Customer customer) {
@@ -54,31 +58,28 @@ public class AccountController {
         } else if (amount.compareTo(getBalance(transfrom)) > 1) {
             return "ERROR: Insufficient Funds.\n";
         } else {
-          //TODO: What happens when a transfer happens?
+            //TODO: What happens when a transfer happens?
 
             return "";
         }
     }
 
-
-    public String payCustomer (Customer customer, int transfrom, int transto, BigDecimal amount) {
+    public String payCustomer(Customer customer, int transfrom, int transto, BigDecimal amount) {
         if (!accountDAO.getAcctIDforCustomer(customer).contains(transfrom)) {
             return "ERROR: Incorrect source account number specified";
 
         } else if (amount.compareTo(getBalance(transfrom)) > 0) {
             return "ERROR: Insufficient Funds.\n";
-        }
-        else if(!validAccount(transto)){
+        } else if (!validAccount(transto)) {
             return "ERROR: Incorrect destination account number specified";
-        }
-        else {
+        } else {
             accountDAO.withdrawfromAccount(transfrom, amount);
             accountDAO.depositToAccount(transto, amount);
             int transtypeid = transTypeController.getTransTypeIDByDesc("Pay");
             transactionController.createTransaction(customer, transtypeid, transfrom, transto, amount);
             return "Paid " + amount + " from Account: " + transfrom + " to Customer: " +
-                accountDAO.getCustIDforAcct(transto) + " Account: " +
-                transto + "\n";
+                    accountDAO.getCustIDforAcct(transto) + " Account: " +
+                    transto + "\n";
         }
     }
 
@@ -98,9 +99,9 @@ public class AccountController {
         } else if (accountDAO.getCustIDforAcct(acctid) == 0) {
             return "Invalid acct ID";
         } else {
-            if(accountDAO.depositToAccount(acctid, amount)){
-                int transtypeid=transTypeController.getTransTypeIDByDesc("Deposit");
-            transactionController.createTransaction(customer,transtypeid,1,acctid,amount);
+            if (accountDAO.depositToAccount(acctid, amount)) {
+                int transtypeid = transTypeController.getTransTypeIDByDesc("Deposit");
+                transactionController.createTransaction(customer, transtypeid, 1, acctid, amount);
                 return amount + " added to Acct ID:" + acctid + "\n";
             }
 
@@ -111,8 +112,7 @@ public class AccountController {
     public String getAllAccounts(Customer customer) {
         if (!customer.getUsername().equals("admin")) {
             return "Only Admin can list all accounts";
-        }
-        else {
+        } else {
             List<Account> accountList = accountDAO.getAllAccounts();
             LOGGER.info("Found " + accountList.size() + " accounts.");
             StringBuilder sb = new StringBuilder();
@@ -123,4 +123,16 @@ public class AccountController {
         }
     }
 
+    public String createAccount(final Customer customer, final String accountName) {
+        requireNonNull(customer, "FAIL - Customer must not be null");
+        if (accountTypeDAO.getAllAccountTypes().stream().noneMatch(accountType -> accountType.getAcctdesc().contains(accountName))) {
+            throw new IllegalArgumentException("FAIL - Invalid command");
+        }
+        final int accountTypeID = accountTypeDAO.getAccountTypeID(accountName);
+        if (accountDAO.getAccountsForCustomer(customer).stream().anyMatch(account -> account.getAcctTypeID().equals(accountTypeID))) {
+            throw new IllegalArgumentException("FAIL - Account already exists");
+        }
+        accountDAO.insertAccount(customer, accountTypeID);
+        return "SUCCESS";
+    }
 }
