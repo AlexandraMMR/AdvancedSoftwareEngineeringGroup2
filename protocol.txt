@@ -1,19 +1,46 @@
-This document details the protocol for interacting with the NewBank server.  
+This document details the protocol for interacting with the NewBank server.
 
-A customer enters the command below and sees the messages returned 
+A customer enters the command below and sees the messages returned
 
 SHOWMYACCOUNTS
-Returns a list of all the customers accounts along with their current balance 
-e.g. Main: 1000.0 
+Returns a list of all the customers accounts along with their current balance
+e.g. Main: 1000.0
 
 NEWACCOUNT <Name>
 e.g. NEWACCOUNT Savings
 Returns SUCCESS or FAIL
 
 MOVE <Amount> <From> <To>
-e.g. MOVE 100 Main Savings 
+e.g. MOVE 100 Main Savings
 Returns SUCCESS or FAIL
 
 PAY <Person/Company> <Ammount>
 e.g. PAY John 100
 Returns SUCCESS or FAIL
+=============================================================================
+Commands available so far:
+SHOWALLACCOUNTTYPES
+- Shows all account types
+
+SHOWALLACCOUNTS
+- Shows all accounts on system
+
+SHOWCUSTOMERS
+- Shows all customers on system
+
+DEPOSIT <ACCTID> <Amount>
+- Admin only
+- Adds to account
+- Mechanism to pay in from external sources
+
+PAY <FROM ACCTID> <TO ACCTID> <Amount>
+
+CREATECUSTOMER <FirstName> <LastName> <Username> <Password> <Email> <Address> <Postcode> <NInumber>
+- Admin only
+- Creates new customer, and also creates new main account associated with the user
+
+HELP
+Shows customer commands available
+
+HELP ADMIN
+Show admin commands available
