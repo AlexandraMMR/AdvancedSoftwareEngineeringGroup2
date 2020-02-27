@@ -19,6 +19,11 @@ import static org.mockito.Mockito.mock;
 
 class AccountControllerTest {
 
+    private static final String MAIN = "Main";
+    private static final String SAVINGS = "Savings";
+    private static final int MAIN_ID = 1;
+    private static final int SAVINGS_ID = 2;
+
     @Test
     void customerCannotBeNull() {
         final AccountController accountController = new AccountController(mock(AccountDAO.class), mock(AccountTypeDAO.class));
@@ -46,17 +51,16 @@ class AccountControllerTest {
         final Account account = mock(Account.class);
         final AccountTypeDAO accountTypeDAO = mock(AccountTypeDAO.class);
         final AccountType accountType = mock(AccountType.class);
-        final String main = "Main";
 
         final AccountController accountController = new AccountController(accountDAO, accountTypeDAO);
 
         given(accountDAO.getAccountsForCustomer(customer)).willReturn(ImmutableList.of(account));
-        given(account.getAccountName()).willReturn(main);
-        given(accountType.getAcctdesc()).willReturn(main);
+        given(account.getAccountName()).willReturn(MAIN);
+        given(accountType.getAcctdesc()).willReturn(MAIN);
         given(accountTypeDAO.getAllAccountTypes()).willReturn(ImmutableList.of(accountType));
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> accountController.createAccount(customer, main))
+                .isThrownBy(() -> accountController.createAccount(customer, MAIN))
                 .withMessage("FAIL - Account already exists");
     }
 
@@ -72,13 +76,14 @@ class AccountControllerTest {
         final AccountController accountController = new AccountController(accountDAO, accountTypeDAO);
 
         given(accountDAO.getAccountsForCustomer(customer)).willReturn(ImmutableList.of(account));
-        given(account.getAccountName()).willReturn("Main");
-        given(mainAccountType.getAcctdesc()).willReturn("Main");
-        given(savingsAccountType.getAcctdesc()).willReturn("Savings");
+        given(account.getAccountName()).willReturn(MAIN);
+        given(account.getAcctTypeID()).willReturn(MAIN_ID);
+        given(mainAccountType.getAcctdesc()).willReturn(MAIN);
+        given(mainAccountType.getAccttypeid()).willReturn(MAIN_ID);
+        given(savingsAccountType.getAcctdesc()).willReturn(SAVINGS);
+        given(savingsAccountType.getAccttypeid()).willReturn(SAVINGS_ID);
         given(accountTypeDAO.getAllAccountTypes()).willReturn(ImmutableList.of(mainAccountType, savingsAccountType));
 
-//        assertThat(accountController.getAccounts(customer)).hasSize(1);
-        assertThat(accountController.createAccount(customer, "Savings")).isEqualTo("SUCCESS");
-//        assertThat(accountController.getAccounts(customer)).hasSize(2);
+        assertThat(accountController.createAccount(customer, SAVINGS)).isEqualTo("SUCCESS");
     }
 }

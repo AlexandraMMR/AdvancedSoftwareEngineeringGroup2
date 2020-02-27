@@ -41,7 +41,7 @@ class NewBankTest {
     @Test
     void invalidRequestWillResultInFailResponse() {
         final NewBank newBank = NewBank.getBank();
-        final String result = newBank.processRequest(mock(Customer.class), "NEWACCOUNT ISA");
+        final String result = newBank.processRequest(mock(Customer.class), "NEWACCOUNT Checking");
         assertThat(result).isEqualTo("FAIL - Invalid command");
     }
 }

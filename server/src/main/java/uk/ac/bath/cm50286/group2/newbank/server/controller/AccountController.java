@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
-import static uk.ac.bath.cm50286.group2.newbank.server.util.StringUtils.convertToTitleCaseSplitting;
 
 public class AccountController {
 
@@ -126,14 +125,14 @@ public class AccountController {
 
     public String createAccount(final Customer customer, final String accountName) {
         requireNonNull(customer, "FAIL - Customer must not be null");
-        final String titleCaseAccount = convertToTitleCaseSplitting(accountName);
-        if (accountTypeDAO.getAllAccountTypes().stream().noneMatch(accountType -> accountType.getAcctdesc().contains(titleCaseAccount))) {
+        if (accountTypeDAO.getAllAccountTypes().stream().noneMatch(accountType -> accountType.getAcctdesc().contains(accountName))) {
             throw new IllegalArgumentException("FAIL - Invalid command");
         }
-        if (getAccounts(customer).stream().anyMatch(account -> account.getAccountName().equals(titleCaseAccount))) {
+        final int accountTypeID = accountTypeDAO.getAccountTypeID(accountName);
+        if (accountDAO.getAccountsForCustomer(customer).stream().anyMatch(account -> account.getAcctTypeID().equals(accountTypeID))) {
             throw new IllegalArgumentException("FAIL - Account already exists");
         }
-        accountDAO.insertAccount(customer, accountTypeDAO.getAccountTypeID(titleCaseAccount));
+        accountDAO.insertAccount(customer, accountTypeID);
         return "SUCCESS";
     }
 }

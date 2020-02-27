@@ -110,7 +110,11 @@ public class NewBank {
 							"SHOWALLACCOUNTS\n" +
 							"CREATECUSTOMER <FirstName> <LastName> <Username> <Password> <Email> <Address> <Postcode> <NInumber>";
 		} else if (requestParams.length == 2 && "NEWACCOUNT".equals(requestParams[0])) {
-			return accountController.createAccount(customer, requestParams[1]);
+			try {
+				return accountController.createAccount(customer, requestParams[1]);
+			} catch (NullPointerException | IllegalArgumentException e) {
+				return e.getMessage();
+			}
 		} else return "FAIL";
 
 

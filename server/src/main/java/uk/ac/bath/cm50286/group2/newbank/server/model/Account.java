@@ -2,7 +2,6 @@ package uk.ac.bath.cm50286.group2.newbank.server.model;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import uk.ac.bath.cm50286.group2.newbank.server.dao.AccountDAO;
 import uk.ac.bath.cm50286.group2.newbank.server.dao.AccountTypeDAO;
 
 import java.math.BigDecimal;
@@ -18,7 +17,6 @@ public class Account {
 	private Integer acctID;
 	private Integer acctTypeID;
 	private AccountTypeDAO accountTypeDAO = new AccountTypeDAO();
-
 
 	public Account(int acctID, int custid, int acctTypeID, BigDecimal balance) {
 		this.acctID = acctID;
@@ -47,12 +45,16 @@ public class Account {
 		this.balance = balance;
 	}
 
-	public String toString() {
-		return (appendSpace(""+acctID) + " | " + appendSpace(""+custid )+ " | " +
-				appendSpace(getAcctType(acctTypeID)) + " | " + appendSpace(""+balance) + " \n");
+	public Integer getAcctTypeID() {
+		return acctTypeID;
 	}
 
-	public String getAcctType(int acctTypeID){
+	public String toString() {
+		return (appendSpace("" + acctID) + " | " + appendSpace("" + custid) + " | " +
+				appendSpace(getAcctType(acctTypeID)) + " | " + appendSpace("" + balance) + " \n");
+	}
+
+	public String getAcctType(int acctTypeID) {
 		return accountTypeDAO.getAccountDesc(acctTypeID);
 	}
 
