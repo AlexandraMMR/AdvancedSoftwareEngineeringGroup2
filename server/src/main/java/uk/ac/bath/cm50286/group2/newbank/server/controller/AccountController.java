@@ -8,6 +8,7 @@ import uk.ac.bath.cm50286.group2.newbank.server.model.Account;
 import uk.ac.bath.cm50286.group2.newbank.server.model.Customer;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccountController {
@@ -59,24 +60,43 @@ public class AccountController {
         }
     }
 
-    public String payCustomer (Customer customer, int transfrom, int transto, BigDecimal amount){
-        if(amount.compareTo(getBalance(transfrom)) > 1 ){
-            return "ERROR: Insufficient Funds.\n";
-        } else if (!accountDAO.getAcctIDforCustomer(customer).contains(transfrom)) {
-            return "ERROR: Incorrect source account number specified";
+
+    public boolean compareAccounts(Account a1, Account a2){
+        if (a1.getAcctID()==a2.getAcctID()){
+            return true;
         }
-        /*else if(!accountDAO.getAllAccounts().contains(accountDAO.getAccount(transto))){
+        else{return false;}
+    }
+
+    public String payCustomer (Customer customer, int transfrom, int transto, BigDecimal amount) {
+        if (!accountDAO.getAcctIDforCustomer(customer).contains(transfrom)) {
+            return "ERROR: Incorrect source account number specified";
+
+        } else if (amount.compareTo(getBalance(transfrom)) > 0) {
+            return "ERROR: Insufficient Funds.\n";
+        }
+        else if(!validAccount(transto)){
             return "ERROR: Incorrect destination account number specified";
-        }*/
+        }
         else {
             accountDAO.withdrawfromAccount(transfrom, amount);
-            accountDAO.depositToAccount(transto,amount);
+            accountDAO.depositToAccount(transto, amount);
             int transtypeid = transTypeController.getTransTypeIDByDesc("Pay");
             transactionController.createTransaction(customer, transtypeid, transfrom, transto, amount);
             return "Paid " + amount + " from Account: " + transfrom + " to Customer: " +
-                    accountDAO.getCustIDforAcct(transto) + " Account: " +
-                    transto + "\n";
+                accountDAO.getCustIDforAcct(transto) + " Account: " +
+                transto + "\n";
         }
+    }
+
+    private boolean validAccount(int transto) {
+        List<Account> accounts = new ArrayList<>(accountDAO.getAllAccounts());
+        for (Account account : accounts) {
+            if (account.getAcctID() == transto) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String deposit(Customer customer, int acctid, BigDecimal amount) {

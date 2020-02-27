@@ -165,10 +165,16 @@ public class AccountDAO {
 
     public BigDecimal getAcctBalance(int acctid) {
         try (Connection connection = DBUtils.getConnection()) {
+            BigDecimal balance = new BigDecimal(0);
             PreparedStatement ps = connection.prepareStatement(SQL_GET_ACCT_BALANCE);
             ps.setInt(1, acctid);
             LOGGER.info("H2: " + ps.toString());
-            return ps.executeQuery().getBigDecimal("balance");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                balance = rs.getBigDecimal("balance");
+            }
+            rs.close();
+            return balance;
         } catch (SQLException e) {
             DBUtils.printSQLException(e);
         }
