@@ -61,13 +61,6 @@ public class AccountController {
     }
 
 
-    public boolean compareAccounts(Account a1, Account a2){
-        if (a1.getAcctID()==a2.getAcctID()){
-            return true;
-        }
-        else{return false;}
-    }
-
     public String payCustomer (Customer customer, int transfrom, int transto, BigDecimal amount) {
         if (!accountDAO.getAcctIDforCustomer(customer).contains(transfrom)) {
             return "ERROR: Incorrect source account number specified";

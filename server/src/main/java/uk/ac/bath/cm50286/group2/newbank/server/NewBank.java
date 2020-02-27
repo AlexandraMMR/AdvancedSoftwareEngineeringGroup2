@@ -76,8 +76,6 @@ public class NewBank {
 					"-------------------------------------------------\n"+
 					accountController.getAllAccounts(customer);
 		}
-
-
 		else if (requestParams[0].equals("SHOWCUSTOMERS")) {
 			return
 					"CUSTID     | Firstname  | Lastname   | Username  \n"+
@@ -85,7 +83,6 @@ public class NewBank {
 					customerController.getOtherCustomers(customer);
 		}
 		else if (requestParams[0].equals("TRANSFER")&&requestParams.length==5){
-
 			String s=accountController.transfer(customer,requestParams[1],Integer.parseInt(requestParams[2]),
 					Integer.parseInt(requestParams[3]), new BigDecimal(requestParams[4]));
 			transactionController.createTransaction(customer, Integer.parseInt(requestParams[1]), Integer.parseInt(requestParams[2]),
@@ -108,13 +105,15 @@ public class NewBank {
 			return
 					"Available Commands:" +
 							"SHOWMYACCOUNTS\n" +
-							"SHOWCUSTOMERS";
+							"SHOWCUSTOMERS" +
+							"PAY <ACCTID FROM> <ACCTID TO> <AMOUNT>";
 		}
 		else if(requestParams[0].equals("HELPADMIN")&&requestParams.length==1) {
 			return
 					"Available Commands:" +
-							"DEPOSIT\n" +
-							"SHOWALLACCOUNTS";
+							"DEPOSIT <ACCTID> <AMOUNT>\n" +
+							"SHOWALLACCOUNTS\n" +
+							"CREATECUSTOMER <FirstName> <LastName> <Username> <Password> <Email> <Address> <Postcode> <NInumber>";
 		} else return "FAIL";
 
 
