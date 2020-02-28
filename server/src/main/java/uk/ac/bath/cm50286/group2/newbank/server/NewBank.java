@@ -99,9 +99,9 @@ public class NewBank {
 					new BigDecimal(requestParams[3]));
 		} else if (requestParams[0].equals("HELP") && requestParams.length == 1) {
 			return
-					"Available Commands:" +
+					"Available Commands:\n" +
 							"SHOWMYACCOUNTS\n" +
-							"SHOWCUSTOMERS" +
+							"SHOWCUSTOMERS\n" +
 							"PAY <ACCTID FROM> <ACCTID TO> <AMOUNT>";
 		} else if (requestParams[0].equals("HELPADMIN") && requestParams.length == 1) {
 			return
